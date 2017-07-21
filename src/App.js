@@ -18,7 +18,7 @@ class App extends Component {
     super();
     this.state = {
       rooms: [],
-      room: 'Room',
+      room: {id:0, name:'Create a Room from the left'},
       messages: [],
       message: '',
     }
@@ -29,20 +29,20 @@ class App extends Component {
     // const roomRef = rootRef.child("room1");
     // roomRef.on('value', (snapshot) => {
     firebase.database().ref('rooms/').on('value', (snapshot) => {
-      const currentRooms = snapshot.val();
-        if (currentRooms != null) {
+      const allRooms = snapshot.val();
+        if (allRooms !== null) {
           this.setState({
-            rooms: currentRooms
+            rooms: allRooms
           });
       }
     })
 
     // the on() method allows syncing data in real time. To use it, attach it to a Ref -> everytime data changes at the location of rooms, it provides this callback function that returns a new set of data
     firebase.database().ref('messages/').on('value', (snapshot) => {
-      const currentMessages = snapshot.val();
-      if (currentMessages != null) {
+      const allMessages = snapshot.val();
+      if (allMessages != null) {
         this.setState({
-          messages: currentMessages
+          messages: allMessages
         });
       }
     });
@@ -50,38 +50,43 @@ class App extends Component {
 
   addRoom = (event) => {
     const nextRoom = {
-      id: this.state.rooms.length,
-      name: 'Room Name'
+      id: 'Room '+(Object.values(this.state.rooms).length+1),
+      name: 'Room '+(Object.values(this.state.rooms).length+1)
     }
 
     firebase.database().ref('rooms/'+nextRoom.id).set(nextRoom)
+
+    this.setState({room:nextRoom})
   }
 
   updateMessage = (event) => {
-    console.log('updateMessage: ' + event.target.value)
     this.setState({
       message: event.target.value
     })
   }
 
   submitMessage = (event) => {
-    console.log('submitMessage ' + this.state.message)
-    const nextMessage = {
-      id: this.state.messages.length,
-      text: this.state.message
-    }
+    if (this.state.room.name==='Create a Room from the left') {
+      alert('Please create a room first!')
+    } else {
+      const nextMessage = {
+        id: 'message '+(Object.values(this.state.messages).length+1),
+        text: this.state.message
+      }
 
-    firebase.database().ref('messages/'+nextMessage.id).set(nextMessage)
+      firebase.database().ref('messages/'+nextMessage.id).set(nextMessage)
+    }
   }
 
   render() {
-    const currentMessage = this.state.messages.map((message, i) => {
+    const allMessages = Object.values(this.state.messages).map((message, i) => {
       return (
         <li key={message.id}>{message.text}</li>
       )
     })
 
-    const currentRoom = this.state.rooms.map((room, i) => {
+    console.log(this.state.rooms)
+    const allRooms = Object.values(this.state.rooms).map((room, i) => {
       return (
         <li key={room.id}>{room.name}</li>
       )
@@ -102,15 +107,15 @@ class App extends Component {
             <Col sm={3} xsHidden className="room-section">
               <Col sm={11} smOffset={1}>
                 <h2>Bloc Chat</h2>
-                <ul className="list-unstyled">{currentRoom}</ul> 
+                <ul className="list-unstyled">{allRooms}</ul> 
                 <Button onClick={this.addRoom}>New Room</Button>
               </Col>
             </Col> 
             {/* Message section */}
             <Col sm={9} className="message-section">
               <Col sm={11} smOffset={1}>
-                <h2>{this.state.room}</h2>
-                <ul className="list-unstyled">{currentMessage}</ul>
+                <h2>{this.state.room.name}</h2>
+                <ul className="list-unstyled">{allMessages}</ul>
                 <input onChange={this.updateMessage} type="text" placeholder="Message" />
                 <Button onClick={this.submitMessage}><i className="glyphicon glyphicon-send"></i></Button>
               </Col>
