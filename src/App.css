@@ -1,4 +1,4 @@
-.App {
+/* .App {
   text-align: center;
 }
 
@@ -21,4 +21,35 @@
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+} */
+.contents.features {
+  width: 100%;
+  height: 100%;
+}
+
+.title {
+  color: white;
+  background-color: grey;
+  padding: 12px;
+}
+
+.room-section{
+  background-color: lightgrey;
+  padding-bottom: 100%;
+  margin-bottom: -100%;
+}
+
+.room-section button {
+  margin-top: 30px;
+}
+
+.features .glyphicon {
+  font-size: 30px;
+  color: blue;
+}
+
+/* not working */
+ul li {
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
