@@ -25,10 +25,10 @@ class App extends Component {
   }
 
   componentDidMount() {
-    const rootRef = firebase.database().ref().child('rooms');
-    const roomRef = rootRef.child("room1");
-    roomRef.on('value', (snapshot) => {
-    // firebase.database().ref('rooms/').on('value', (snapshot) => {
+    // const rootRef = firebase.database().ref().child('rooms');
+    // const roomRef = rootRef.child("room1");
+    // roomRef.on('value', (snapshot) => {
+    firebase.database().ref('rooms/').on('value', (snapshot) => {
       const currentRooms = snapshot.val();
         if (currentRooms != null) {
           this.setState({
@@ -51,7 +51,7 @@ class App extends Component {
   addRoom = (event) => {
     const nextRoom = {
       id: this.state.rooms.length,
-      text: this.state.room
+      name: 'Room Name'
     }
 
     firebase.database().ref('rooms/'+nextRoom.id).set(nextRoom)
@@ -83,7 +83,7 @@ class App extends Component {
 
     const currentRoom = this.state.rooms.map((room, i) => {
       return (
-        <li key={room.id}>{room.text}</li>
+        <li key={room.id}>{room.name}</li>
       )
     })
 
