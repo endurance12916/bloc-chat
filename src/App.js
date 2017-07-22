@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import * as firebase from 'firebase';
 import { Grid, Row, Col, Button } from 'react-bootstrap'
+import _ from 'lodash'
 
 const config = {
     apiKey: "AIzaSyCXeADl350Vv4FALlgr4O4VtWztXWJFw3g",
@@ -18,16 +19,28 @@ class App extends Component {
     super();
     this.state = {
       rooms: [],
-      room: {id:0, name:'Create a Room from the left'},
+      // room: {id:'room 0', name:'Public Room'},
+      room: {},
       messages: [],
-      message: '',
+      message: {},
     }
   }
 
+  // 3 setStates in componentDidMount() cause the page to be rendered 3 times at start, is there a better way?
   componentDidMount() {
-    // const rootRef = firebase.database().ref().child('rooms');
-    // const roomRef = rootRef.child("room1");
-    // roomRef.on('value', (snapshot) => {
+    console.log('componentDidMount() triggered')
+    // if no room selected, go to Public Room and display messages in public room
+    if (_.isEmpty(this.state.room)&&_.isEmpty(this.state.rooms)) {
+      const publicRoom = {
+        id: 'room 0',
+        name: 'Public Room'
+      }
+      
+      firebase.database().ref('rooms/'+publicRoom.id).set(publicRoom)
+
+      this.setState({room:publicRoom})
+    }
+
     firebase.database().ref('rooms/').on('value', (snapshot) => {
       const allRooms = snapshot.val();
         if (allRooms !== null) {
@@ -36,9 +49,9 @@ class App extends Component {
           });
       }
     })
-
+    // console.log('messages/'+this.state.room.id+'/')
     // the on() method allows syncing data in real time. To use it, attach it to a Ref -> everytime data changes at the location of rooms, it provides this callback function that returns a new set of data
-    firebase.database().ref('messages/').on('value', (snapshot) => {
+    firebase.database().ref('messages/room 0/').on('value', (snapshot) => {
       const allMessages = snapshot.val();
       if (allMessages != null) {
         this.setState({
@@ -48,10 +61,28 @@ class App extends Component {
     });
   }
 
+  componentWillUpdate = (newProps, newState) => {
+    console.log('componentWillUpdate() triggered')
+    // console.log('newState passed into componentWillUpdate',newState.room.id)
+    if (newState.room !== this.state.room) {
+      console.log('componentWillUpdate() code executed')
+      this.setState({room:newState.room}, () => {
+        // console.log('checking this.state.room.id',this.state.room.id)
+        const roomNum = newState.room.id
+        firebase.database().ref('messages/'+roomNum+'/').on('value', (snapshot) => {
+          const allMessages = snapshot.val();
+          if (allMessages != null) {
+            this.setState({messages: allMessages});
+          }
+        });
+      })
+    }
+  }
+
   addRoom = (event) => {
     const nextRoom = {
-      id: 'Room '+(Object.values(this.state.rooms).length+1),
-      name: 'Room '+(Object.values(this.state.rooms).length+1)
+      id: 'room '+(Object.values(this.state.rooms).length),
+      name: 'Room '+(Object.values(this.state.rooms).length)
     }
 
     firebase.database().ref('rooms/'+nextRoom.id).set(nextRoom)
@@ -60,37 +91,38 @@ class App extends Component {
   }
 
   updateMessage = (event) => {
+    // every letter typed into the message box will cause the page to re-render. is there a better method?
     this.setState({
       message: event.target.value
     })
   }
 
   submitMessage = (event) => {
-    if (this.state.room.name==='Create a Room from the left') {
-      alert('Please create a room first!')
-    } else {
-      const nextMessage = {
-        id: 'message '+(Object.values(this.state.messages).length+1),
-        text: this.state.message
-      }
-
-      firebase.database().ref('messages/'+nextMessage.id).set(nextMessage)
+    const nextMessage = {
+      user: 'Me',
+      createdAt: Date.now(),
+      text: this.state.message
     }
+
+    firebase.database().ref(('messages/'+this.state.room.id)+'/'+nextMessage.createdAt).set(nextMessage)
   }
 
   render() {
+    console.log('rendered')
+    // console.log('this.state.messages: ', this.state.messages)
     const allMessages = Object.values(this.state.messages).map((message, i) => {
       return (
-        <li key={message.id}>{message.text}</li>
+        <li key={message.createdAt}>{message.text}</li>
       )
     })
+    // console.log('all messages: ', allMessages)
 
-    console.log(this.state.rooms)
     const allRooms = Object.values(this.state.rooms).map((room, i) => {
       return (
         <li key={room.id}>{room.name}</li>
       )
     })
+    // console.log('all rooms: ', allRooms)
 
     return (
       <div className="App">
