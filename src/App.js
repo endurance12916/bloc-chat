@@ -63,16 +63,16 @@ class App extends Component {
 
   componentWillUpdate = (newProps, newState) => {
     console.log('componentWillUpdate() triggered')
-    // console.log('newState passed into componentWillUpdate',newState.room.id)
     if (newState.room !== this.state.room) {
       console.log('componentWillUpdate() code executed')
       this.setState({room:newState.room}, () => {
-        // console.log('checking this.state.room.id',this.state.room.id)
         const roomNum = newState.room.id
         firebase.database().ref('messages/'+roomNum+'/').on('value', (snapshot) => {
           const allMessages = snapshot.val();
-          if (allMessages != null) {
+          if (allMessages !== null) {
             this.setState({messages: allMessages});
+          } else {
+            this.setState({messages: []})
           }
         });
       })
