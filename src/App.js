@@ -147,9 +147,11 @@ class App extends Component {
             <Col sm={9} className="message-section">
               <Col sm={11} smOffset={1}>
                 <h2>{this.state.room.name}</h2>
-                <ul className="list-unstyled">{allMessages}</ul>
-                <input onChange={this.updateMessage} type="text" placeholder="Message" />
-                <Button onClick={this.submitMessage}><i className="glyphicon glyphicon-send"></i></Button>
+                <div className="message-field">
+                  <ul className="list-unstyled messages-body">{allMessages}</ul>
+                  <input onChange={this.updateMessage} type="text" placeholder="Message" className="message-box" />
+                  <Button onClick={this.submitMessage} className="message-send-button"><i className="glyphicon glyphicon-send"></i></Button>
+                </div>
               </Col>
             </Col>
           </Row>
