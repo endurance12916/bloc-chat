@@ -34,11 +34,12 @@ ul li {
   height: 100%;
 }
 
-.title {
-  color: white;
-  background-color: grey;
-  padding: 12px;
-}
+h2 {
+  margin-top: 35px;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 20px;
+} 
 
 .room-section{
   background-color: lightgrey;

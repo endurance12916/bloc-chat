@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
+import Navbar from './Navbar.js'
+import Login from './login.js'
+import AddRoom from './addRoom.js'
 import * as firebase from 'firebase';
 import { Grid, Row, Col, Button } from 'react-bootstrap'
 import _ from 'lodash'
@@ -19,10 +22,11 @@ class App extends Component {
     super();
     this.state = {
       rooms: [],
-      // room: {id:'room 0', name:'Public Room'},
       room: {},
       messages: [],
       message: {},
+      showSignIn: false,
+      showAddRoom: false,
     }
   }
 
@@ -49,7 +53,7 @@ class App extends Component {
           });
       }
     })
-    // console.log('messages/'+this.state.room.id+'/')
+
     // the on() method allows syncing data in real time. To use it, attach it to a Ref -> everytime data changes at the location of rooms, it provides this callback function that returns a new set of data
     firebase.database().ref('messages/room 0/').on('value', (snapshot) => {
       const allMessages = snapshot.val();
@@ -79,15 +83,13 @@ class App extends Component {
     }
   }
 
-  addRoom = (event) => {
-    const nextRoom = {
+  addRoom = (name) => {
+    const newRoom = {
       id: 'room '+(Object.values(this.state.rooms).length),
-      name: 'Room '+(Object.values(this.state.rooms).length)
+      name: name
     }
-
-    firebase.database().ref('rooms/'+nextRoom.id).set(nextRoom)
-
-    this.setState({room:nextRoom})
+    firebase.database().ref('rooms/'+newRoom.id).set(newRoom)
+    this.setState({room:newRoom})
   }
 
   updateMessage = (event) => {
@@ -107,40 +109,52 @@ class App extends Component {
     firebase.database().ref(('messages/'+this.state.room.id)+'/'+nextMessage.createdAt).set(nextMessage)
   }
 
+  openSignIn = () => {
+    this.setState({ showSignIn: true})
+  }
+
+  closeSignIn = () => {
+    this.setState({ showSignIn: false})
+  }
+
+  openAddRoom = () => {
+    this.setState({ showAddRoom: true})
+  }
+
+  closeAddRoom = () => {
+    this.setState({ showAddRoom: false})
+  }
+
   render() {
+
     console.log('rendered')
-    // console.log('this.state.messages: ', this.state.messages)
     const allMessages = Object.values(this.state.messages).map((message, i) => {
       return (
         <li key={message.createdAt}>{message.text}</li>
       )
     })
-    // console.log('all messages: ', allMessages)
 
     const allRooms = Object.values(this.state.rooms).map((room, i) => {
       return (
         <li key={room.id}>{room.name}</li>
       )
     })
-    // console.log('all rooms: ', allRooms)
 
     return (
       <div className="App">
+        <Login showSignIn={this.state.showSignIn} closeSignIn={this.closeSignIn}/>
+        <AddRoom addRoom={this.addRoom.bind(this)} showAddRoom={this.state.showAddRoom} closeAddRoom={this.closeAddRoom}/>
+        {/* Navbar */}
+        <Navbar openSignIn={this.openSignIn}/>
+        {/* Content */}
         <Grid fluid>
-          {/* Title */}
-          <Row className="title row text-center">
-            <Col sm={12}>
-              <h1>Bloc Chat App</h1>
-            </Col>
-          </Row>
-          {/* Content */}
           <Row className="contents features">
             {/* Select Room section */}
             <Col sm={3} xsHidden className="room-section">
               <Col sm={11} smOffset={1}>
                 <h2>Bloc Chat</h2>
+                <Button onClick={() => this.openAddRoom()}>New Room</Button>
                 <ul className="list-unstyled">{allRooms}</ul> 
-                <Button onClick={this.addRoom}>New Room</Button>
               </Col>
             </Col> 
             {/* Message section */}
