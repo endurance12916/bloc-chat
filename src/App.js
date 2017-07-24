@@ -101,6 +101,7 @@ class App extends Component {
 
   submitMessage = (event) => {
     const nextMessage = {
+      // should I add room id in here?
       user: 'Me',
       createdAt: Date.now(),
       text: this.state.message
@@ -125,14 +126,30 @@ class App extends Component {
     this.setState({ showAddRoom: false})
   }
 
+  switchRoom = (key) => {
+    let roomRef = firebase.database().ref('rooms').child(key);
+    this.setState({room:roomRef})
+  }
+
   render() {
 
     console.log('rendered')
     const allMessages = Object.values(this.state.messages).map((message, i) => {
       return (
-        <li key={message.createdAt}>{message.text}</li>
+        <li className="messages-body" key={message.createdAt}>
+          <div className="username">{message.user}</div>
+          <div className="timestamp">{message.createdAt}</div>
+          <div className="user-message">{message.text}</div>
+        </li>
       )
     })
+
+    //proxyConsole.js:56 Warning: setState(...): Cannot update during an existing state transition (such as within `render` or another component's constructor). Render methods should be a pure function of props and state; constructor side-effects are an anti-pattern, but can be moved to `componentWillMount`
+    // const allRooms = Object.values(this.state.rooms).map((room, i) => {
+    //   return (
+    //     <li key={room.id}><Button type="submit" onClick={this.switchRoom(room.id)}>{room.name}</Button></li>
+    //   )
+    // })
 
     const allRooms = Object.values(this.state.rooms).map((room, i) => {
       return (
@@ -143,7 +160,7 @@ class App extends Component {
     return (
       <div className="App">
         <Login showSignIn={this.state.showSignIn} closeSignIn={this.closeSignIn}/>
-        <AddRoom addRoom={this.addRoom.bind(this)} showAddRoom={this.state.showAddRoom} closeAddRoom={this.closeAddRoom}/>
+        <AddRoom addRoom={this.addRoom} showAddRoom={this.state.showAddRoom} closeAddRoom={this.closeAddRoom}/>
         {/* Navbar */}
         <Navbar openSignIn={this.openSignIn}/>
         {/* Content */}
@@ -159,15 +176,14 @@ class App extends Component {
             </Col> 
             {/* Message section */}
             <Col sm={9} className="message-section">
-              <Col sm={11} smOffset={1}>
                 <h2>{this.state.room.name}</h2>
-                <div className="message-field">
-                  <ul className="list-unstyled messages-body">{allMessages}</ul>
+                <ul className="list-unstyled">{allMessages}</ul>
+                <div className="message-input-field">
                   <input onChange={this.updateMessage} type="text" placeholder="Message" className="message-box" />
-                  <Button onClick={this.submitMessage} className="message-send-button"><i className="glyphicon glyphicon-send"></i></Button>
+                  &nbsp;
+                  <Button onClick={this.submitMessage}><i className="glyphicon glyphicon-send"></i></Button>
                 </div>
               </Col>
-            </Col>
           </Row>
         </Grid>
       </div>
