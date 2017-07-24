@@ -130,15 +130,32 @@ class App extends Component {
     let roomRef = firebase.database().ref('rooms').child(key);
     this.setState({room:roomRef})
   }
+  
+  formatTime = (time) => {
+    // Create a new JavaScript Date object based on the timestamp
+    // multiplied by 1000 so that the argument is in milliseconds, not seconds.
+    var date = new Date(time*1000);
+    // Hours part from the timestamp
+    var hours = date.getHours();
+    // Minutes part from the timestamp
+    var minutes = "0" + date.getMinutes();
+    // Seconds part from the timestamp
+    var seconds = "0" + date.getSeconds();
+
+    // Will display time in 10:30:23 format
+    return (hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2));
+  }
 
   render() {
 
     console.log('rendered')
+
+    // should this be in render or outside of it?
     const allMessages = Object.values(this.state.messages).map((message, i) => {
       return (
         <li className="messages-body" key={message.createdAt}>
           <div className="username">{message.user}</div>
-          <div className="timestamp">{message.createdAt}</div>
+          <div className="timestamp">{this.formatTime(message.createdAt)}</div>
           <div className="user-message">{message.text}</div>
         </li>
       )
