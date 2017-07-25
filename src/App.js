@@ -4,7 +4,7 @@ import Navbar from './Navbar.js'
 import Login from './login.js'
 import AddRoom from './addRoom.js'
 import * as firebase from 'firebase';
-import { Grid, Row, Col, Button } from 'react-bootstrap'
+import { Grid, Row, Col, Button, Nav, NavItem } from 'react-bootstrap'
 import _ from 'lodash'
 
 const config = {
@@ -96,10 +96,12 @@ class App extends Component {
   }
 
   updateMessage = (event) => {
-    // every letter typed into the message box will cause the page to re-render. is there a better method?
-    this.setState({
+    event.persist();
+    // if message submitted before 0.5sec, it wouldn't register... is there a way to fix it?
+    const debounceMessage = _.debounce(()=>this.setState({
       message: event.target.value
-    })
+    }),500)
+    debounceMessage();
   }
 
   submitMessage = (event) => {
@@ -138,18 +140,8 @@ class App extends Component {
   }
   
   formatTime = (time) => {
-    // Create a new JavaScript Date object based on the timestamp
-    // multiplied by 1000 so that the argument is in milliseconds, not seconds.
-    var date = new Date(time*1000);
-    // Hours part from the timestamp
-    var hours = date.getHours();
-    // Minutes part from the timestamp
-    var minutes = "0" + date.getMinutes();
-    // Seconds part from the timestamp
-    var seconds = "0" + date.getSeconds();
-
-    // Will display time in 10:30:23 format
-    return (hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2));
+    let d = new Date(time);
+    return (''+d).slice(0,24);
   }
 
   render() {
@@ -170,7 +162,7 @@ class App extends Component {
     const allRooms = Object.values(this.state.rooms).map((room, i) => {
       return (
         // use callback this.switchRoom.bind(this.room.id) instead of calling the function right away this.switchRoom(room.id)
-        <li key={room.id}><Button type="submit" onClick={this.switchRoom.bind(this,room.id)}>{room.name}</Button></li>
+          <NavItem eventKey={room.id} onClick={this.switchRoom.bind(this,room.id)} className="room-pills">{room.name}</NavItem>
       )
     })
 
@@ -188,7 +180,10 @@ class App extends Component {
               <Col sm={11} smOffset={1}>
                 <h2>Bloc Chat</h2>
                 <Button onClick={() => this.openAddRoom()}>New Room</Button>
-                <ul className="list-unstyled">{allRooms}</ul> 
+                {/* <ul className="list-unstyled">{allRooms}</ul>  */}
+                <Nav bsStyle="pills" stacked>
+                  {allRooms}
+                </Nav>
               </Col>
             </Col> 
             {/* Message section */}

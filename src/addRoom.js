@@ -27,12 +27,12 @@ class AddRoom extends Component {
             <FormGroup>
                 <FormControl type="text" placeholder="Enter a room name" inputRef={(input) => this.roomName = input}/>
             </FormGroup>
-            <Button onClick={this.props.closeAddRoom}>
-                Cancel
-            </Button>
-            &nbsp;&nbsp;&nbsp;
             <Button type="submit" onClick={this.props.closeAddRoom}>
                 Add room
+            </Button>
+            &nbsp;&nbsp;&nbsp;
+            <Button onClick={this.props.closeAddRoom}>
+                Cancel
             </Button>
         </Form>
           </Modal.Body>
