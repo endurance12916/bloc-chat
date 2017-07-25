@@ -32,7 +32,6 @@ class App extends Component {
 
   // 3 setStates in componentDidMount() cause the page to be rendered 3 times at start, is there a better way?
   componentDidMount() {
-    console.log('componentDidMount() triggered')
     // if no room selected, go to Public Room and display messages in public room
     if (_.isEmpty(this.state.room)&&_.isEmpty(this.state.rooms)) {
       const publicRoom = {
@@ -41,8 +40,13 @@ class App extends Component {
       }
       
       firebase.database().ref('rooms/'+publicRoom.id).set(publicRoom)
+      let roomRef = firebase.database().ref('rooms/'+publicRoom.id)
 
-      this.setState({room:publicRoom})
+      roomRef.on("value", function(snapshot) {
+        this.setState({room:snapshot.val()})
+      }.bind(this), function (errorObject) {
+        console.log("The read failed: " + errorObject.code);
+      });
     }
 
     firebase.database().ref('rooms/').on('value', (snapshot) => {
@@ -68,7 +72,6 @@ class App extends Component {
   componentWillUpdate = (newProps, newState) => {
     console.log('componentWillUpdate() triggered')
     if (newState.room !== this.state.room) {
-      console.log('componentWillUpdate() code executed')
       this.setState({room:newState.room}, () => {
         const roomNum = newState.room.id
         firebase.database().ref('messages/'+roomNum+'/').on('value', (snapshot) => {
@@ -101,7 +104,6 @@ class App extends Component {
 
   submitMessage = (event) => {
     const nextMessage = {
-      // should I add room id in here?
       user: 'Me',
       createdAt: Date.now(),
       text: this.state.message
@@ -127,8 +129,12 @@ class App extends Component {
   }
 
   switchRoom = (key) => {
-    let roomRef = firebase.database().ref('rooms').child(key);
-    this.setState({room:roomRef})
+    let roomRef = firebase.database().ref('rooms/'+key)
+    roomRef.on("value", function(snapshot) {
+      this.setState({room:snapshot.val()})
+    }.bind(this), function (errorObject) {
+      console.log("The read failed: " + errorObject.code);
+    });
   }
   
   formatTime = (time) => {
@@ -147,10 +153,10 @@ class App extends Component {
   }
 
   render() {
+    // anything that has HTML can be put here, but no function that calls setState immediately
 
     console.log('rendered')
 
-    // should this be in render or outside of it?
     const allMessages = Object.values(this.state.messages).map((message, i) => {
       return (
         <li className="messages-body" key={message.createdAt}>
@@ -161,16 +167,10 @@ class App extends Component {
       )
     })
 
-    //proxyConsole.js:56 Warning: setState(...): Cannot update during an existing state transition (such as within `render` or another component's constructor). Render methods should be a pure function of props and state; constructor side-effects are an anti-pattern, but can be moved to `componentWillMount`
-    // const allRooms = Object.values(this.state.rooms).map((room, i) => {
-    //   return (
-    //     <li key={room.id}><Button type="submit" onClick={this.switchRoom(room.id)}>{room.name}</Button></li>
-    //   )
-    // })
-
     const allRooms = Object.values(this.state.rooms).map((room, i) => {
       return (
-        <li key={room.id}>{room.name}</li>
+        // use callback this.switchRoom.bind(this.room.id) instead of calling the function right away this.switchRoom(room.id)
+        <li key={room.id}><Button type="submit" onClick={this.switchRoom.bind(this,room.id)}>{room.name}</Button></li>
       )
     })
 
