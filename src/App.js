@@ -4,8 +4,9 @@ import Navbar from './Navbar.js'
 import Login from './login.js'
 import AddRoom from './addRoom.js'
 import * as firebase from 'firebase';
-import { Grid, Row, Col, Button, Nav, NavItem } from 'react-bootstrap'
-import _ from 'lodash'
+import { Grid, Row, Col, Button, Nav, NavItem } from 'react-bootstrap';
+import Cookies from 'js-cookie'
+import _ from 'lodash';
 
 const config = {
     apiKey: "AIzaSyCXeADl350Vv4FALlgr4O4VtWztXWJFw3g",
@@ -17,12 +18,20 @@ const config = {
 };
 firebase.initializeApp(config);
 
+function getUserFromCookies(user) {
+  return (previousState, currentProps) => {
+    return {...previousState, user: user};
+  };
+}
+
 class App extends Component {
   constructor() {
     super();
     this.state = {
       rooms: [],
       room: {},
+      users: [],
+      user: {},
       messages: [],
       message: {},
       showSignIn: false,
@@ -49,12 +58,22 @@ class App extends Component {
       });
     }
 
+    console.log('Cookie', Cookies.get('user'));
+
+    // this.setState(getUserFromCookies('user'));  <-- this setState causes this.state.user='user'
+
+    // this.getUserFromCookies(user)
+    this.setState({user: Cookies.get('user')});
+    console.log('user', this.state.user.name);
+
+    if (_.isEmpty(this.state.user)) {
+      this.setState({showSignIn: true})
+    }
+
     firebase.database().ref('rooms/').on('value', (snapshot) => {
       const allRooms = snapshot.val();
-        if (allRooms !== null) {
-          this.setState({
-            rooms: allRooms
-          });
+      if (allRooms !== null) {
+        this.setState({rooms: allRooms});
       }
     })
 
@@ -62,9 +81,7 @@ class App extends Component {
     firebase.database().ref('messages/room 0/').on('value', (snapshot) => {
       const allMessages = snapshot.val();
       if (allMessages != null) {
-        this.setState({
-          messages: allMessages
-        });
+        this.setState({messages: allMessages});
       }
     });
   }
@@ -95,6 +112,16 @@ class App extends Component {
     this.setState({room:newRoom})
   }
 
+  addUser = (name) => {
+    const newUser = {
+      id: 'user '+(Object.values(this.state.users).length),
+      name: name
+    }
+    firebase.database().ref('users/'+newUser.id).set(newUser)
+    this.setState({user:newUser})
+    Cookies.set('user', newUser);
+  }
+
   updateMessage = (event) => {
     event.persist();
     // if message submitted before 0.5sec, it wouldn't register... is there a way to fix it?
@@ -103,15 +130,20 @@ class App extends Component {
     }),500)
     debounceMessage();
   }
-
+  // after submitting a message, the messagebox will not automatically clear itself. How to fix it?
   submitMessage = (event) => {
-    const nextMessage = {
-      user: 'Me',
-      createdAt: Date.now(),
-      text: this.state.message
+    if (_.isEmpty(this.state.user)) {
+      return alert('Please sign in first!')
+    } else {
+      const nextMessage = {
+        userId: this.state.user.id,
+        username: this.state.user.name,
+        createdAt: Date.now(),
+        text: this.state.message
+      }
+      
+      firebase.database().ref(('messages/'+this.state.room.id)+'/'+nextMessage.createdAt).set(nextMessage)
     }
-
-    firebase.database().ref(('messages/'+this.state.room.id)+'/'+nextMessage.createdAt).set(nextMessage)
   }
 
   openSignIn = () => {
@@ -148,11 +180,12 @@ class App extends Component {
     // anything that has HTML can be put here, but no function that calls setState immediately
 
     console.log('rendered')
+    console.log('this.state.user', this.state.user)
 
     const allMessages = Object.values(this.state.messages).map((message, i) => {
       return (
         <li className="messages-body" key={message.createdAt}>
-          <div className="username">{message.user}</div>
+          <div className="username">{message.username}</div>
           <div className="timestamp">{this.formatTime(message.createdAt)}</div>
           <div className="user-message">{message.text}</div>
         </li>
@@ -168,10 +201,10 @@ class App extends Component {
 
     return (
       <div className="App">
-        <Login showSignIn={this.state.showSignIn} closeSignIn={this.closeSignIn}/>
+        <Login addUser={this.addUser} showSignIn={this.state.showSignIn} closeSignIn={this.closeSignIn}/>
         <AddRoom addRoom={this.addRoom} showAddRoom={this.state.showAddRoom} closeAddRoom={this.closeAddRoom}/>
         {/* Navbar */}
-        <Navbar openSignIn={this.openSignIn}/>
+        <Navbar openSignIn={this.openSignIn} user={this.state.user}/>
         {/* Content */}
         <Grid fluid>
           <Row className="contents features">
@@ -180,7 +213,6 @@ class App extends Component {
               <Col sm={11} smOffset={1}>
                 <h2>Bloc Chat</h2>
                 <Button onClick={() => this.openAddRoom()}>New Room</Button>
-                {/* <ul className="list-unstyled">{allRooms}</ul>  */}
                 <Nav bsStyle="pills" stacked>
                   {allRooms}
                 </Nav>

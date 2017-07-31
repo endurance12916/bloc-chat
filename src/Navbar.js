@@ -1,9 +1,24 @@
 import React, { Component } from 'react';
 import './Navbar.css'
 import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
+import _ from 'lodash';
 
 class TopNavbar extends Component {
   render() {
+    const displaySignIn = () => {
+      console.log('Nav user isEmpty?',_.isEmpty(this.props.user))
+      console.log('this.props.user',this.props.user)
+      if (_.isEmpty(this.props.user)) {
+        return (
+          <NavItem eventKey={1} onClick={() => this.props.openSignIn()} >Sign In</NavItem>
+        )
+      }
+      else {
+        return (
+          <NavItem eventKey={1} >{this.props.user.name}</NavItem>
+        )
+      }
+    }
     return (
       <Navbar collapseOnSelect className="override">
         <Navbar.Header>
@@ -14,7 +29,7 @@ class TopNavbar extends Component {
         </Navbar.Header>
         <Navbar.Collapse>
           <Nav pullRight>
-            <NavItem eventKey={1} onClick={() => this.props.openSignIn()} >Sign In</NavItem>
+            {displaySignIn()}
             <NavDropdown eventKey={3} title="About" id="basic-nav-dropdown">
               <MenuItem eventKey={3.1}>One button</MenuItem>
               <MenuItem eventKey={3.2}>Another button</MenuItem>
