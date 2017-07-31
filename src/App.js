@@ -35,7 +35,7 @@ class App extends Component {
 
   // 3 setStates in componentDidMount() cause the page to be rendered 3 times at start, is there a better way?
 
-  // page renders 5 times at start now
+  // page renders 5 times at start now... should I queue them up?
   componentDidMount() {
     console.log('componentDidMount triggered')
     // if no room selected, go to Public Room and display messages in public room
@@ -55,8 +55,8 @@ class App extends Component {
       });
     }
 
-    console.log('Cookie', Cookies.get('user')); // Cookie still exists after I delete data from the database. Is that a problem?
-    this.setUserFromCookie(); // state not updated immediately, how to fix?
+    console.log('Cookie', Cookies.get('user')); // Cookie still exists after I delete all data from the database. Is that a problem?
+    this.setUserFromCookie(); // state not updated immediately, and the line below prints undefined. how to fix?
     console.log('user', this.state.user.name); 
 
     if (_.isEmpty(this.state.user)) {
@@ -122,13 +122,13 @@ class App extends Component {
 
   updateMessage = (event) => {
     event.persist();
-    // if message submitted before 0.5sec, it wouldn't register... is there a way to fix it?
+    // if message submitted before 0.5sec, it wouldn't register. is there a way to force cancel debounce with make the submit button?
     const debounceMessage = _.debounce(()=>this.setState({
       message: event.target.value
     }),500)
     debounceMessage();
   }
-  // after submitting a message, the messagebox will not automatically clear itself. How to fix it?
+  // after submitting a message, the messagebox will not automatically clear itself. Is that the default or did I do something wrong?
   submitMessage = (event) => {
     if (_.isEmpty(this.state.user)) {
       return alert('Please sign in first!')
