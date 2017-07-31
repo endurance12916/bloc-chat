@@ -18,12 +18,6 @@ const config = {
 };
 firebase.initializeApp(config);
 
-function getUserFromCookies(user) {
-  return (previousState, currentProps) => {
-    return {...previousState, user: user};
-  };
-}
-
 class App extends Component {
   constructor() {
     super();
@@ -40,7 +34,10 @@ class App extends Component {
   }
 
   // 3 setStates in componentDidMount() cause the page to be rendered 3 times at start, is there a better way?
+
+  // page renders 5 times at start now
   componentDidMount() {
+    console.log('componentDidMount triggered')
     // if no room selected, go to Public Room and display messages in public room
     if (_.isEmpty(this.state.room)&&_.isEmpty(this.state.rooms)) {
       const publicRoom = {
@@ -58,13 +55,9 @@ class App extends Component {
       });
     }
 
-    console.log('Cookie', Cookies.get('user'));
-
-    // this.setState(getUserFromCookies('user'));  <-- this setState causes this.state.user='user'
-
-    // this.getUserFromCookies(user)
-    this.setState({user: Cookies.get('user')});
-    console.log('user', this.state.user.name);
+    console.log('Cookie', Cookies.get('user')); // Cookie still exists after I delete data from the database. Is that a problem?
+    this.setUserFromCookie(); // state not updated immediately, how to fix?
+    console.log('user', this.state.user.name); 
 
     if (_.isEmpty(this.state.user)) {
       this.setState({showSignIn: true})
@@ -84,6 +77,11 @@ class App extends Component {
         this.setState({messages: allMessages});
       }
     });
+  }
+
+  setUserFromCookie = () => {
+    const currentUser = Cookies.get('user');
+    this.setState({user: currentUser});
   }
 
   componentWillUpdate = (newProps, newState) => {
@@ -180,7 +178,7 @@ class App extends Component {
     // anything that has HTML can be put here, but no function that calls setState immediately
 
     console.log('rendered')
-    console.log('this.state.user', this.state.user)
+    // console.log('this.state.user', this.state.user)
 
     const allMessages = Object.values(this.state.messages).map((message, i) => {
       return (
@@ -195,7 +193,7 @@ class App extends Component {
     const allRooms = Object.values(this.state.rooms).map((room, i) => {
       return (
         // use callback this.switchRoom.bind(this.room.id) instead of calling the function right away this.switchRoom(room.id)
-          <NavItem eventKey={room.id} onClick={this.switchRoom.bind(this,room.id)} className="room-pills">{room.name}</NavItem>
+          <NavItem key={room.id} onClick={this.switchRoom.bind(this,room.id)} className="room-pills">{room.name}</NavItem>
       )
     })
 
