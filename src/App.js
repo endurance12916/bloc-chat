@@ -122,7 +122,7 @@ class App extends Component {
 
   updateMessage = (event) => {
     event.persist();
-    // if message submitted before 0.5sec, it wouldn't register. is there a way to force cancel debounce with make the submit button?
+    // if message submitted before 0.5sec, it wouldn't register. is there a way to force cancel debounce when submit message?
     const debounceMessage = _.debounce(()=>this.setState({
       message: event.target.value
     }),500)
