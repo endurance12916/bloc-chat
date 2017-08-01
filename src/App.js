@@ -38,7 +38,7 @@ class App extends Component {
 
   // page renders 5 times at start now... should I queue them up?
   componentDidMount() {
-    // console.log('componentDidMount triggered')
+    console.log('componentDidMount triggered')
     // if no room selected, go to Public Room and display messages in public room
     if (_.isEmpty(this.state.room)&&_.isEmpty(this.state.rooms)) {
       const publicRoom = {
@@ -56,25 +56,13 @@ class App extends Component {
       });
     }
 
-    console.log('Cookie', Cookies.get('user')); // Cookie still exists after I delete all data from the database. Is that a problem?
-    // this.setUserFromCookie(); // state not updated immediately, and the line below prints undefined. how to fix?
-    
-    console.log('this.state.user - before setState',this.state.user)
-    console.log('isempty?', _.isEmpty(this.state.user))
-    // const currentUser = Cookies.get('user');
-    this.setState({user: Cookies.get('user')}, () => {
-      if (_.isEmpty(this.state.user)) {
-        return (
-          this.setState({showSignIn: true})
-        )
-      }
-    });
-    console.log('this.state.user - after setState',this.state.user)
-    console.log('username', this.state.user.name); 
+    this.debounceUpdateMessage = debounce(this.updateMessage, 500);
 
-    // if (_.isEmpty(this.state.user)) {
-    //   this.setState({showSignIn: true})
-    // }
+    const user = Cookies.get('user');
+    this.setState({ 
+      user: user ? JSON.parse(user) : undefined,
+      showSignIn: !user
+    });
 
     firebase.database().ref('rooms/').on('value', (snapshot) => {
       const allRooms = snapshot.val();
@@ -128,13 +116,13 @@ class App extends Component {
     Cookies.set('user', newUser);
   }
 
+  typeMessage = (event) => {
+    event.persist();
+    this.debounceUpdateMessage(event);
+  }
+
   updateMessage = (event) => {
     event.persist();
-    // if message submitted before 0.5sec, it wouldn't register. is there a way to force cancel debounce when submit message?
-    // const debounceMessage = _.debounce(()=>this.setState({
-    //   message: event.target.value
-    // }),500)
-    // debounceMessage();
     this.setState({message: event.target.value})
   }
   // after submitting a message, the messagebox will not automatically clear itself. Is that the default or did I do something wrong?
@@ -184,10 +172,10 @@ class App extends Component {
   }
 
   render() {
+    // cookie -> serialized into a JSON string, when you retrieve data from cookie, need to parse it
+    // console.log('type', typeof this.state.user) -> user would be a string
     // anything that has HTML can be put here, but no function that calls setState immediately
-
     console.log('rendered')
-    // console.log('this.state.user', this.state.user)
 
     const allMessages = Object.values(this.state.messages).map((message, i) => {
       return (
@@ -231,7 +219,7 @@ class App extends Component {
                 <ul className="list-unstyled">{allMessages}</ul>
                 <div className="message-input-field">
                   {/* give this a ref and add onMouseUp to Button to set ref to '' */}
-                  <input onChange={debounce(this.updateMessage,500)} type="text" placeholder="Message" className="message-box" />
+                  <input onChange={this.typeMessage} type="text" placeholder="Message" className="message-box" />
                   &nbsp;
                   <Button onClick={this.submitMessage}><i className="glyphicon glyphicon-send"></i></Button>
                 </div>
