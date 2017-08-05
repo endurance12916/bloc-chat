@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import './App.css';
-import Navbar from './Navbar.js'
-import Login from './login.js'
-import AddRoom from './addRoom.js'
+import Navbar from './Navbar.js';
+import Login from './login.js';
+import AddRoom from './addRoom.js';
+import Rooms from './Rooms.js';
+import Messages from './Messages.js';
 import * as firebase from 'firebase';
-import { Grid, Row, Col, Button, Nav, NavItem } from 'react-bootstrap';
-import Cookies from 'js-cookie'
+import { Grid, Row } from 'react-bootstrap';
+import Cookies from 'js-cookie';
 import _ from 'lodash';
-import debounce from 'lodash/debounce'
 
 const config = {
     apiKey: "AIzaSyCXeADl350Vv4FALlgr4O4VtWztXWJFw3g",
@@ -28,17 +29,16 @@ class App extends Component {
       users: [],
       user: {},
       messages: [],
-      message: {},
       showSignIn: false,
       showAddRoom: false,
     }
   }
+  // this component now only has setState methods, all else have been moved to other respective components. Is it ideal now?
 
   // 3 setStates in componentDidMount() cause the page to be rendered 3 times at start, is there a better way?
 
   // page renders 5 times at start now... should I queue them up?
   componentDidMount() {
-    console.log('componentDidMount triggered')
     // if no room selected, go to Public Room and display messages in public room
     if (_.isEmpty(this.state.room)&&_.isEmpty(this.state.rooms)) {
       const publicRoom = {
@@ -55,8 +55,6 @@ class App extends Component {
         console.log("The read failed: " + errorObject.code);
       });
     }
-
-    this.debounceUpdateMessage = debounce(this.updateMessage, 200);
 
     const user = Cookies.get('user');
     this.setState({ 
@@ -81,7 +79,6 @@ class App extends Component {
   }
 
   componentWillUpdate = (newProps, newState) => {
-    // console.log('componentWillUpdate() triggered')
     if (newState.room !== this.state.room) {
       this.setState({room:newState.room}, () => {
         const roomNum = newState.room.id
@@ -116,31 +113,6 @@ class App extends Component {
     Cookies.set('user', newUser);
   }
 
-  typeMessage = (event) => {
-    event.persist();
-    this.debounceUpdateMessage(event);
-  }
-
-  updateMessage = (event) => {
-    event.persist();
-    this.setState({message: event.target.value})
-  }
-  // after submitting a message, the messagebox will not automatically clear itself. Is that the default or did I do something wrong?
-  submitMessage = (event) => {
-    if (_.isEmpty(this.state.user)) {
-      return alert('Please sign in first!')
-    } else {
-      const nextMessage = {
-        userId: this.state.user.id,
-        username: this.state.user.name,
-        createdAt: Date.now(),
-        text: this.state.message
-      }
-      
-      firebase.database().ref(('messages/'+this.state.room.id)+'/'+nextMessage.createdAt).set(nextMessage)
-    }
-  }
-
   openSignIn = () => {
     this.setState({ showSignIn: true})
   }
@@ -165,65 +137,20 @@ class App extends Component {
       console.log("The read failed: " + errorObject.code);
     });
   }
-  
-  formatTime = (time) => {
-    let d = new Date(time);
-    return (''+d).slice(0,24);
-  }
 
   render() {
     // cookie -> serialized into a JSON string, when you retrieve data from cookie, need to parse it
     // console.log('type', typeof this.state.user) -> user would be a string
     // anything that has HTML can be put here, but no function that calls setState immediately
-    console.log('rendered')
-
-    const allMessages = Object.values(this.state.messages).map((message, i) => {
-      return (
-        <li className="messages-body" key={message.createdAt}>
-          <div className="username">{message.username}</div>
-          <div className="timestamp">{this.formatTime(message.createdAt)}</div>
-          <div className="user-message">{message.text}</div>
-        </li>
-      )
-    })
-
-    const allRooms = Object.values(this.state.rooms).map((room, i) => {
-      return (
-        // use callback this.switchRoom.bind(this.room.id) instead of calling the function right away this.switchRoom(room.id)
-          <NavItem key={room.id} onClick={this.switchRoom.bind(this,room.id)} className="room-pills">{room.name}</NavItem>
-      )
-    })
-
     return (
       <div className="App">
         <Login addUser={this.addUser} showSignIn={this.state.showSignIn} closeSignIn={this.closeSignIn}/>
         <AddRoom addRoom={this.addRoom} showAddRoom={this.state.showAddRoom} closeAddRoom={this.closeAddRoom}/>
-        {/* Navbar */}
         <Navbar openSignIn={this.openSignIn} user={this.state.user}/>
-        {/* Content */}
         <Grid fluid>
           <Row className="contents features">
-            {/* Select Room section */}
-            <Col sm={3} xsHidden className="room-section">
-              <Col sm={11} smOffset={1}>
-                <h2>Bloc Chat</h2>
-                <Button onClick={() => this.openAddRoom()}>New Room</Button>
-                <Nav bsStyle="pills" stacked>
-                  {allRooms}
-                </Nav>
-              </Col>
-            </Col> 
-            {/* Message section */}
-            <Col sm={9} className="message-section">
-                <h2>{this.state.room.name}</h2>
-                <ul className="list-unstyled">{allMessages}</ul>
-                <div className="message-input-field">
-                  {/* give this a ref and add onMouseUp to Button to set ref to '' */}
-                  <input onChange={this.typeMessage} type="text" placeholder="Message" className="message-box" />
-                  &nbsp;
-                  <Button onClick={this.submitMessage}><i className="glyphicon glyphicon-send"></i></Button>
-                </div>
-              </Col>
+            <Rooms rooms={this.state.rooms} switchRoom={this.switchRoom} openAddRoom={this.openAddRoom} />
+            <Messages user={this.state.user} room={this.state.room} messages={this.state.messages} />
           </Row>
         </Grid>
       </div>
