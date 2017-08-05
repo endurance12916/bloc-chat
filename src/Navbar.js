@@ -6,8 +6,6 @@ import _ from 'lodash';
 class TopNavbar extends Component {
   render() {
     const displaySignIn = () => {
-      console.log('Nav user isEmpty?',_.isEmpty(this.props.user))
-      console.log('this.props.user',this.props.user)
       if (_.isEmpty(this.props.user)) {
         return (
           <NavItem eventKey={1} onClick={() => this.props.openSignIn()} >Sign In</NavItem>
@@ -15,7 +13,12 @@ class TopNavbar extends Component {
       }
       else {
         return (
-          <NavItem eventKey={1} >{this.props.user.name}</NavItem>
+          <NavDropdown id={1} title={this.props.user.name} >
+            <MenuItem eventKey={1.1}>One button</MenuItem>
+            <MenuItem eventKey={1.2}>Another button</MenuItem>
+            <MenuItem divider />
+            <MenuItem eventKey={1.3}>Sign Out</MenuItem>
+          </NavDropdown>
         )
       }
     }

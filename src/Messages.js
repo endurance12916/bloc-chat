@@ -12,7 +12,7 @@ class Messages extends Component {
     }
   }
 
-  // should this be componentDidMount or componentWillUpdate? and why can I not put this function outside of a lifecycle method?
+  // Should I always put debounce function inside of a lifecycle method?
   componentWillUpdate() {
     this.debounceUpdateMessage = debounce(this.updateMessage, 200); 
   }
@@ -20,10 +20,7 @@ class Messages extends Component {
   typeMessage = (event) => {
     event.persist();
     this.debounceUpdateMessage(event);
-    // this.updateMessage(event);
   }
-
-  // debounceUpdateMessage = debounce(this.updateMessage, 200); 
 
   updateMessage = (event) => {
     event.persist();
@@ -42,6 +39,7 @@ class Messages extends Component {
       }
       
       firebase.database().ref(('messages/'+this.props.room.id)+'/'+nextMessage.createdAt).set(nextMessage)
+      this.messageText.value="";
     }
   }
 
@@ -67,8 +65,7 @@ class Messages extends Component {
         <h2>{this.props.room.name}</h2>
         <ul className="list-unstyled">{allMessages}</ul>
         <div className="message-input-field">
-        {/* give this a ref and add onMouseUp to Button to set ref to '' */}
-        <input onChange={this.typeMessage} type="text" placeholder="Message" className="message-box" />
+        <input onChange={this.typeMessage} type="text" placeholder="Message" className="message-box" ref={(input) => this.messageText = input}/>
         &nbsp;
         <Button onClick={this.submitMessage}><i className="glyphicon glyphicon-send"></i></Button>
         </div>
