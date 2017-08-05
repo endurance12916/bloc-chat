@@ -56,7 +56,7 @@ class App extends Component {
       });
     }
 
-    this.debounceUpdateMessage = debounce(this.updateMessage, 500);
+    this.debounceUpdateMessage = debounce(this.updateMessage, 200);
 
     const user = Cookies.get('user');
     this.setState({ 
