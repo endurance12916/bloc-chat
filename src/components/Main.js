@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './App.css';
+import './Main.css';
 import Navbar from './Navbar.js';
 import Login from './login.js';
 import AddRoom from './addRoom.js';
@@ -20,7 +20,7 @@ const config = {
 };
 firebase.initializeApp(config);
 
-class App extends Component {
+class Main extends Component {
   constructor() {
     super();
     this.state = {
@@ -158,4 +158,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default Main;
