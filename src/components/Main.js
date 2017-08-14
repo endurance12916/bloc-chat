@@ -29,8 +29,8 @@ class Main extends Component {
       users: [],
       user: {},
       messages: [],
-      showSignIn: false,
-      showAddRoom: false,
+      // showSignIn: false,
+      // showAddRoom: false,
     }
   }
   // this component now only has setState methods, all else have been moved to other respective components. Is it ideal now?
@@ -101,6 +101,7 @@ class Main extends Component {
     }
     firebase.database().ref('rooms/'+newRoom.id).set(newRoom)
     this.setState({room:newRoom})
+    // this.props.addRoom(newRoom)
   }
 
   addUser = (name) => {
@@ -113,21 +114,21 @@ class Main extends Component {
     Cookies.set('user', newUser);
   }
 
-  openSignIn = () => {
-    this.setState({ showSignIn: true})
-  }
+  // openSignIn = () => {
+  //   this.setState({ showSignIn: true})
+  // }
 
-  closeSignIn = () => {
-    this.setState({ showSignIn: false})
-  }
+  // closeSignIn = () => {
+  //   this.setState({ showSignIn: false})
+  // }
 
-  openAddRoom = () => {
-    this.setState({ showAddRoom: true})
-  }
+  // openAddRoom = () => {
+  //   this.setState({ showAddRoom: true})
+  // }
 
-  closeAddRoom = () => {
-    this.setState({ showAddRoom: false})
-  }
+  // closeAddRoom = () => {
+  //   this.setState({ showAddRoom: false})
+  // }
 
   switchRoom = (key) => {
     let roomRef = firebase.database().ref('rooms/'+key)
@@ -139,17 +140,30 @@ class Main extends Component {
   }
 
   render() {
+    console.log(this.props.showAddRoom)
     // cookie -> serialized into a JSON string, when you retrieve data from cookie, need to parse it
     // console.log('type', typeof this.state.user) -> user would be a string
     // anything that has HTML can be put here, but no function that calls setState immediately
     return (
+      // original code (w/o redux)
+      // <div className="App">
+      //   <Login addUser={this.addUser} showSignIn={this.state.showSignIn} closeSignIn={this.closeSignIn}/>
+      //   <AddRoom addRoom={this.addRoom} showAddRoom={this.state.showAddRoom} closeAddRoom={this.closeAddRoom}/>
+      //   <Navbar openSignIn={this.openSignIn} user={this.state.user}/>
+      //   <Grid fluid>
+      //     <Row className="contents features">
+      //       <Rooms rooms={this.state.rooms} switchRoom={this.switchRoom} openAddRoom={this.openAddRoom} />
+      //       <Messages user={this.state.user} room={this.state.room} messages={this.state.messages} />
+      //     </Row>
+      //   </Grid>
+      // </div>
       <div className="App">
-        <Login addUser={this.addUser} showSignIn={this.state.showSignIn} closeSignIn={this.closeSignIn}/>
-        <AddRoom addRoom={this.addRoom} showAddRoom={this.state.showAddRoom} closeAddRoom={this.closeAddRoom}/>
-        <Navbar openSignIn={this.openSignIn} user={this.state.user}/>
+        <Login addUser={this.addUser} showSignIn={this.props.showSignIn} hideSignIn={this.props.hideSignIn}/>
+        <AddRoom addRoom={this.addRoom} showAddRoom={this.props.showAddRoom} hideAddRoom={this.props.hideAddRoom}/>
+        <Navbar showSignIn={this.props.showSignIn} user={this.state.user}/>
         <Grid fluid>
           <Row className="contents features">
-            <Rooms rooms={this.state.rooms} switchRoom={this.switchRoom} openAddRoom={this.openAddRoom} />
+            <Rooms rooms={this.props.rooms} switchRoom={this.props.switchRoom} openAddRoom={this.props.openAddRoom} />
             <Messages user={this.state.user} room={this.state.room} messages={this.state.messages} />
           </Row>
         </Grid>

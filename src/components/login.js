@@ -16,7 +16,7 @@ class Login extends Component {
       <div className="modal-container" style={{height: 200}}>
         <Modal
           show={this.props.showSignIn}
-          onHide={this.props.closeSignIn}
+          onHide={this.props.hideSignIn}
           container={this}
           aria-labelledby="contained-modal-title"
         >
@@ -28,7 +28,7 @@ class Login extends Component {
             <FormGroup>
                 <FormControl type="text" placeholder="This name will appear when you set messages" inputRef={(input) => this.userName = input}/>
             </FormGroup>
-            <Button type="submit" onClick={this.props.closeSignIn}>
+            <Button type="submit" onClick={this.props.hideSignIn}>
                 Set username
             </Button>
         </Form>

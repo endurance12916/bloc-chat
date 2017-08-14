@@ -8,7 +8,7 @@ class TopNavbar extends Component {
     const displaySignIn = () => {
       if (_.isEmpty(this.props.user)) {
         return (
-          <NavItem eventKey={1} onClick={() => this.props.openSignIn()} >Sign In</NavItem>
+          <NavItem eventKey={1} onClick={() => this.props.showSignIn()} >Sign In</NavItem>
         )
       }
       else {

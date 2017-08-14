@@ -5,15 +5,19 @@ import * as actionCreators from '../actions/actionCreators';
 import Main from './Main';
 
 // insert data into the component
+// this function accepts state and then returns an object of props
 function mapStateToProps(state) {
   return {
-    rooms: state.room, // -> this.props.room = state.room
+    rooms: state.rooms, // -> this.props.rooms = state.rooms
+    showAddRoom: state.showAddRoom,
     messages: state.messages,
-    user: state.user
+    users: state.users,
+    showSignIn: state.showSignIn
   }
 }
 
 // insert actions into the component
+// this function is able to dispatch our action creator with a prop.
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(actionCreators, dispatch)
 }
