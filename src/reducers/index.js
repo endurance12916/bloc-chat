@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux';
 
-import { meta, messages } from './messages';
+import { isFetching, messages } from './messages';
 import { rooms, showAddRoom } from './rooms';
 import { users, showSignIn } from './users';
 
 const rootReducer = combineReducers({
-  meta,
+  isFetching,
   messages,
   rooms,
   showAddRoom,

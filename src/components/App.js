@@ -8,6 +8,7 @@ import Main from './Main';
 // this function accepts state and then returns an object of props
 function mapStateToProps(state) {
   return {
+    isFetching: state.isFetching,
     rooms: state.rooms, // -> this.props.rooms = state.rooms
     showAddRoom: state.showAddRoom,
     messages: state.messages,

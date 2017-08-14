@@ -3,7 +3,7 @@
 
 import * as firebase from 'firebase';
 
-export const meta = (state = [], action) => {
+export const isFetching = (state = [], action) => {
     switch (action.type) {
         case 'START_FETCHING_MESSAGES':
           console.log("reducer - start fetching message");
