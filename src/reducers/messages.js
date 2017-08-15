@@ -3,17 +3,17 @@
 
 import * as firebase from 'firebase';
 
-export const isFetching = (state = [], action) => {
+export const isFetchingMessages = (state = [], action) => {
     switch (action.type) {
         case 'START_FETCHING_MESSAGES':
-          console.log("reducer - start fetching message");
+          console.log("reducer - start fetching messages");
           return Object.assign({}, state, {
-              isFetching: true
+              isFetchingMessages: true
           });
         case 'RECEIVED_MESSAGES':
-          console.log("reducer - receiving message");
+          console.log("reducer - receiving messages");
           return Object.assign({}, state, {
-              isFetching: false,
+              isFetchingMessages: false,
           });
         default:
             return state

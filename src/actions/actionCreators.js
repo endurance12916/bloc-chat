@@ -2,11 +2,13 @@
 // However, for asynchronous actions, need to return functions. Thunk allows you to write action creators that return a function instead of an action. The inner function can receive the store methods dispatch and getState as parameters
 import * as firebase from 'firebase';
 
-export const fetchMessages = () => {
+// Should these fetch functions be here or in reducers?
+// Fetch Messages
+export const fetchMessages = (roomId) => {
   return function (dispatch) {
     dispatch(startFetchingMessages());
     firebase.database()
-            .ref('messages/'+this.props.room.id+'/') // how to get room.id?
+            .ref('messages/'+roomId+'/') // how to get room.id?
             .on('value', (snapshot) => {
               setTimeout(() => {
                 const messages = snapshot.val() || [];
@@ -28,6 +30,38 @@ export const startFetchingMessages = () => ({
 
 export const receivedMessages = () => ({
     type: 'RECEIVED_MESSAGES',
+});
+
+// Fetch Rooms
+export const fetchRooms = () => {
+  console.log('fetchRooms called')
+  return function (dispatch) {
+    dispatch(startFetchingRooms());
+    firebase.database()
+            .ref('rooms/')
+            .on('value', (snapshot) => {
+              console.log('value', snapshot)
+              setTimeout(() => {
+                const rooms = snapshot.val() || [];
+Object.values(rooms).forEach(room => dispatch(addRoom(room)));
+    dispatch(receivedRooms());
+              }, 0);
+            });
+    }
+}
+// export const receiveRooms = (rooms) => {
+  // return function (dispatch) {
+    // Object.values(rooms).forEach(room => dispatch(addRoom(room)));
+    // dispatch(receivedRooms());
+  // }
+// }
+
+export const startFetchingRooms = () => ({
+    type: 'START_FETCHING_ROOMS'
+});
+
+export const receivedRooms = () => ({
+    type: 'RECEIVED_ROOMS',
 });
 
 // Messages
@@ -53,6 +87,7 @@ export function sendMessage(userId, username, text) {
 
 // Rooms
 export function addRoom(room) {
+  console.log('addRoom called', room)
   return {
     type: 'ADD_ROOM',
     room
@@ -66,13 +101,13 @@ export function switchRoom(room) {
   };
 } 
 
-export function showAddRoom() {
+export function showAddRoomWindow() {
   return {
     type: 'SHOW_ADD_ROOM',
   };
 }
 
-export function hideAddRoom() {
+export function hideAddRoomWindow() {
   return {
     type: 'HIDE_ADD_ROOM',
   };
@@ -87,13 +122,13 @@ export function signUp(id, name) {
   };
 }
 
-export function showSignIn() {
+export function showSignInWindow() {
   return {
     type: 'SHOW_SIGN_IN',
   };
 }
 
-export function hideSignIn() {
+export function hideSignInWindow() {
   return {
     type: 'HIDE_SIGN_IN',
   };

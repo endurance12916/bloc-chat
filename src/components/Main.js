@@ -40,21 +40,24 @@ class Main extends Component {
   // page renders 5 times at start now... should I queue them up?
   componentDidMount() {
     // if no room selected, go to Public Room and display messages in public room
-    if (_.isEmpty(this.state.room)&&_.isEmpty(this.state.rooms)) {
-      const publicRoom = {
-        id: 'room 0',
-        name: 'Public Room'
-      }
+    // if (_.isEmpty(this.state.room)&&_.isEmpty(this.state.rooms)) {
+    //   const publicRoom = {
+    //     id: 'room 0',
+    //     name: 'Public Room'
+    //   }
       
-      firebase.database().ref('rooms/'+publicRoom.id).set(publicRoom)
-      let roomRef = firebase.database().ref('rooms/'+publicRoom.id)
+    //   firebase.database().ref('rooms/'+publicRoom.id).set(publicRoom)
+    //   let roomRef = firebase.database().ref('rooms/'+publicRoom.id)
 
-      roomRef.on("value", function(snapshot) {
-        this.setState({room:snapshot.val()})
-      }.bind(this), function (errorObject) {
-        console.log("The read failed: " + errorObject.code);
-      });
-    }
+    //   roomRef.on("value", function(snapshot) {
+    //     this.setState({room:snapshot.val()})
+    //   }.bind(this), function (errorObject) {
+    //     console.log("The read failed: " + errorObject.code);
+    //   });
+    // }
+
+    this.props.fetchRooms();
+    // this.props.fetchMessages(this.props.room.id) // make sure this is expressed in state tree (rename to active room)
 
     const user = Cookies.get('user');
     this.setState({ 
@@ -140,7 +143,7 @@ class Main extends Component {
   }
 
   render() {
-    console.log(this.props.showAddRoom)
+    console.log(this.props.rooms)
     // cookie -> serialized into a JSON string, when you retrieve data from cookie, need to parse it
     // console.log('type', typeof this.state.user) -> user would be a string
     // anything that has HTML can be put here, but no function that calls setState immediately
@@ -159,11 +162,11 @@ class Main extends Component {
       // </div>
       <div className="App">
         <Login addUser={this.addUser} showSignIn={this.props.showSignIn} hideSignIn={this.props.hideSignIn}/>
-        <AddRoom addRoom={this.addRoom} showAddRoom={this.props.showAddRoom} hideAddRoom={this.props.hideAddRoom}/>
+        <AddRoom addRoom={this.addRoom} showAddRoom={this.props.showAddRoom} hideAddRoomWindow={this.props.hideAddRoomWindow}/>
         <Navbar showSignIn={this.props.showSignIn} user={this.state.user}/>
         <Grid fluid>
           <Row className="contents features">
-            <Rooms rooms={this.props.rooms} switchRoom={this.props.switchRoom} openAddRoom={this.props.openAddRoom} />
+            <Rooms rooms={this.props.rooms} switchRoom={this.props.switchRoom} showAddRoomWindow={this.props.showAddRoomWindow} />
             <Messages user={this.state.user} room={this.state.room} messages={this.state.messages} />
           </Row>
         </Grid>

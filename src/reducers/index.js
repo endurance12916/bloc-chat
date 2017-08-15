@@ -1,14 +1,15 @@
 import { combineReducers } from 'redux';
 
-import { isFetching, messages } from './messages';
-import { rooms, showAddRoom } from './rooms';
+import { isFetchingMessages, messages } from './messages';
+import { isFetchingRooms, rooms, showAddRoom } from './rooms';
 import { users, showSignIn } from './users';
 
 const rootReducer = combineReducers({
-  isFetching,
+  isFetchingMessages,
   messages,
+  isFetchingRooms,
   rooms,
-  showAddRoom,
+  showAddRoom, // : showAddRoom  because ES6
   users,
   showSignIn
 })

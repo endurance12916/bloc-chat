@@ -11,13 +11,14 @@ class AddRoom extends Component {
     }
 
   render() {
-    console.log('hideAddRoom', this.props.hideAddRoom);
+    console.log('hideAddRoom', !this.props.showAddRoom);
     console.log('showAddRoom', this.props.showAddRoom);
+    console.log('hideAddRoomWindow', this.props.hideAddRoomWindow);
     return (
       <div className="modal-container" style={{height: 200}}>
         <Modal
           show={this.props.showAddRoom}
-          onHide={this.props.hideAddRoom}
+          onHide={this.props.hideAddRoomWindow}
           container={this}
           aria-labelledby="contained-modal-title"
         >
@@ -29,11 +30,11 @@ class AddRoom extends Component {
             <FormGroup>
                 <FormControl type="text" placeholder="Enter a room name" inputRef={(input) => this.roomName = input}/>
             </FormGroup>
-            <Button type="submit" onClick={this.props.hideAddRoom}>
+            <Button type="submit" onClick={this.props.hideAddRoomWindow}>
                 Add room
             </Button>
             &nbsp;&nbsp;&nbsp;
-            <Button onClick={this.props.hideAddRoom}>
+            <Button onClick={this.props.hideAddRoomWindow}>
                 Cancel
             </Button>
         </Form>
