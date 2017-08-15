@@ -8,7 +8,6 @@ import Messages from './Messages.js';
 import * as firebase from 'firebase';
 import { Grid, Row } from 'react-bootstrap';
 import Cookies from 'js-cookie';
-import _ from 'lodash';
 
 const config = {
     apiKey: "AIzaSyCXeADl350Vv4FALlgr4O4VtWztXWJFw3g",
@@ -143,7 +142,6 @@ class Main extends Component {
   }
 
   render() {
-    console.log(this.props.rooms)
     // cookie -> serialized into a JSON string, when you retrieve data from cookie, need to parse it
     // console.log('type', typeof this.state.user) -> user would be a string
     // anything that has HTML can be put here, but no function that calls setState immediately

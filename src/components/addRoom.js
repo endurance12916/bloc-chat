@@ -11,14 +11,11 @@ class AddRoom extends Component {
     }
 
   render() {
-    console.log('hideAddRoom', !this.props.showAddRoom);
-    console.log('showAddRoom', this.props.showAddRoom);
-    console.log('hideAddRoomWindow', this.props.hideAddRoomWindow);
     return (
       <div className="modal-container" style={{height: 200}}>
         <Modal
           show={this.props.showAddRoom}
-          onHide={this.props.hideAddRoomWindow}
+          onHide={this.props.hideAddRoomWindow} // onHide is looking for a function
           container={this}
           aria-labelledby="contained-modal-title"
         >

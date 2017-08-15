@@ -11,7 +11,6 @@ class Rooms extends Component {
         <NavItem key={room.id} onClick={this.props.switchRoom.bind(this,room.id)} className="room-pills">{room.name}</NavItem>
         )
     })
-    console.log('this.props.showAddRoomWindow',this.props.showAddRoomWindow)
     return (
       <Col sm={3} xsHidden className="room-section">
         <Col sm={11} smOffset={1}>

@@ -34,17 +34,15 @@ export const receivedMessages = () => ({
 
 // Fetch Rooms
 export const fetchRooms = () => {
-  console.log('fetchRooms called')
   return function (dispatch) {
     dispatch(startFetchingRooms());
     firebase.database()
             .ref('rooms/')
             .on('value', (snapshot) => {
-              console.log('value', snapshot)
               setTimeout(() => {
                 const rooms = snapshot.val() || [];
-Object.values(rooms).forEach(room => dispatch(addRoom(room)));
-    dispatch(receivedRooms());
+                Object.values(rooms).forEach(room => dispatch(addRoom(room)));
+                dispatch(receivedRooms());
               }, 0);
             });
     }

@@ -7,7 +7,6 @@ import Main from './Main';
 // insert data into the component
 // this function accepts state and then returns an object of props
 function mapStateToProps(state) {
-  console.log('states', state)
   return {
     isFetchingMessages: state.isFetchingMessages,
     isFetchingRooms: state.isFetchingRooms,
