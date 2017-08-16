@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
-import './Navbar.css'
+import './userNavbar.component.css'
 import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
 import _ from 'lodash';
 
-class TopNavbar extends Component {
+class UserNavbar extends Component {
   render() {
     const displaySignIn = () => {
-      if (_.isEmpty(this.props.user)) {
+      if (_.isEmpty(this.props.activeUser)) {
         return (
-          <NavItem eventKey={1} onClick={() => this.props.showSignIn()} >Sign In</NavItem>
+          <NavItem eventKey={1} onClick={() => this.props.showSignInWindow()} >Sign In</NavItem>
         )
       }
       else {
         return (
-          <NavDropdown id={1} title={this.props.user.name} >
+          <NavDropdown id={1} title={this.props.activeUser.name} >
             <MenuItem eventKey={1.1}>One button</MenuItem>
             <MenuItem eventKey={1.2}>Another button</MenuItem>
             <MenuItem divider />
@@ -46,4 +46,4 @@ class TopNavbar extends Component {
   }
 }
 
-export default TopNavbar;
+export default UserNavbar;

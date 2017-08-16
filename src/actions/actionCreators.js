@@ -32,35 +32,35 @@ export const receivedMessages = () => ({
     type: 'RECEIVED_MESSAGES',
 });
 
-// Fetch Rooms
-export const fetchRooms = () => {
-  return function (dispatch) {
-    dispatch(startFetchingRooms());
-    firebase.database()
-            .ref('rooms/')
-            .on('value', (snapshot) => {
-              setTimeout(() => {
-                const rooms = snapshot.val() || [];
-                Object.values(rooms).forEach(room => dispatch(addRoom(room)));
-                dispatch(receivedRooms());
-              }, 0);
-            });
-    }
-}
-// export const receiveRooms = (rooms) => {
-  // return function (dispatch) {
-    // Object.values(rooms).forEach(room => dispatch(addRoom(room)));
-    // dispatch(receivedRooms());
-  // }
+// // Fetch Rooms
+// export const fetchRooms = () => {
+//   return function (dispatch) {
+//     dispatch(startFetchingRooms());
+//     firebase.database()
+//             .ref('rooms/')
+//             .on('value', (snapshot) => {
+//               setTimeout(() => {
+//                 const rooms = snapshot.val() || [];
+//                 Object.values(rooms).forEach(room => dispatch(addRoom(room)));
+//                 dispatch(receivedRooms());
+//               }, 0);
+//             });
+//     }
 // }
+// // export const receiveRooms = (rooms) => {
+//   // return function (dispatch) {
+//     // Object.values(rooms).forEach(room => dispatch(addRoom(room)));
+//     // dispatch(receivedRooms());
+//   // }
+// // }
 
-export const startFetchingRooms = () => ({
-    type: 'START_FETCHING_ROOMS'
-});
+// export const startFetchingRooms = () => ({
+//     type: 'START_FETCHING_ROOMS'
+// });
 
-export const receivedRooms = () => ({
-    type: 'RECEIVED_ROOMS',
-});
+// export const receivedRooms = () => ({
+//     type: 'RECEIVED_ROOMS',
+// });
 
 // Messages
 export function addMessage(userId, username, text) {
@@ -83,33 +83,33 @@ export function sendMessage(userId, username, text) {
 
 
 
-// Rooms
-export function addRoom(room) {
-  console.log('addRoom called', room)
-  return {
-    type: 'ADD_ROOM',
-    room
-  };
-}
+// // Rooms
+// export function addRoom(room) {
+//   console.log('addRoom called', room)
+//   return {
+//     type: 'ADD_ROOM',
+//     room
+//   };
+// }
 
-export function switchRoom(room) {
-  return {
-    type: 'SWITCH_ROOM',
-    room
-  };
-} 
+// export function switchRoom(room) {
+//   return {
+//     type: 'SWITCH_ROOM',
+//     room
+//   };
+// } 
 
-export function showAddRoomWindow() {
-  return {
-    type: 'SHOW_ADD_ROOM',
-  };
-}
+// export function showAddRoomWindow() {
+//   return {
+//     type: 'SHOW_ADD_ROOM',
+//   };
+// }
 
-export function hideAddRoomWindow() {
-  return {
-    type: 'HIDE_ADD_ROOM',
-  };
-}
+// export function hideAddRoomWindow() {
+//   return {
+//     type: 'HIDE_ADD_ROOM',
+//   };
+// }
 
 // Users
 export function signUp(id, name) {

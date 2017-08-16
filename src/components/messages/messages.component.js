@@ -62,7 +62,7 @@ class Messages extends Component {
 
     return (
       <Col sm={9} className="message-section">
-        <h2>{this.props.room.name}</h2>
+        <h2>{this.props.activeRoom.name}</h2>
         <ul className="list-unstyled">{allMessages}</ul>
         <div className="message-input-field">
         <input onChange={this.typeMessage} type="text" placeholder="Message" className="message-box" ref={(input) => this.messageText = input}/>

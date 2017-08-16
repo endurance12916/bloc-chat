@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import './Main.css';
-import Navbar from './Navbar.js';
-import Login from './login.js';
-import AddRoom from './addRoom.js';
-import Rooms from './Rooms.js';
-import Messages from './Messages.js';
+import UserNavbar from './user/userNavbar.component';
+import UserLoginContainer from './user/userLogin.container';
+// import AddRoomWindowContainer from './addRoomWindow/addRoomWindow.container';
+import { RoomsC, AddRoomWindowC } from './rooms/rooms.container.js';
+import MessagesContainer from './messages/messages.container';
 import * as firebase from 'firebase';
 import { Grid, Row } from 'react-bootstrap';
 import Cookies from 'js-cookie';
@@ -28,7 +28,7 @@ class Main extends Component {
       users: [],
       user: {},
       messages: [],
-      // showSignIn: false,
+      // isSignInWindowVisible: false,
       // showAddRoom: false,
     }
   }
@@ -55,13 +55,13 @@ class Main extends Component {
     //   });
     // }
 
-    this.props.fetchRooms();
+    // this.props.fetchRooms();
     // this.props.fetchMessages(this.props.room.id) // make sure this is expressed in state tree (rename to active room)
 
     const user = Cookies.get('user');
     this.setState({ 
       user: user ? JSON.parse(user) : undefined,
-      showSignIn: !user
+      isSignInWindowVisible: !user
     });
 
     firebase.database().ref('rooms/').on('value', (snapshot) => {
@@ -117,11 +117,11 @@ class Main extends Component {
   }
 
   // openSignIn = () => {
-  //   this.setState({ showSignIn: true})
+  //   this.setState({ isSignInWindowVisible: true})
   // }
 
   // closeSignIn = () => {
-  //   this.setState({ showSignIn: false})
+  //   this.setState({ isSignInWindowVisible: false})
   // }
 
   // openAddRoom = () => {
@@ -148,7 +148,7 @@ class Main extends Component {
     return (
       // original code (w/o redux)
       // <div className="App">
-      //   <Login addUser={this.addUser} showSignIn={this.state.showSignIn} closeSignIn={this.closeSignIn}/>
+      //   <Login addUser={this.addUser} isSignInWindowVisible={this.state.isSignInWindowVisible} closeSignIn={this.closeSignIn}/>
       //   <AddRoom addRoom={this.addRoom} showAddRoom={this.state.showAddRoom} closeAddRoom={this.closeAddRoom}/>
       //   <Navbar openSignIn={this.openSignIn} user={this.state.user}/>
       //   <Grid fluid>
@@ -159,13 +159,17 @@ class Main extends Component {
       //   </Grid>
       // </div>
       <div className="App">
-        <Login addUser={this.addUser} showSignIn={this.props.showSignIn} hideSignIn={this.props.hideSignIn}/>
-        <AddRoom addRoom={this.addRoom} showAddRoom={this.props.showAddRoom} hideAddRoomWindow={this.props.hideAddRoomWindow}/>
-        <Navbar showSignIn={this.props.showSignIn} user={this.state.user}/>
+        {/* <UserLoginContainer addUser={this.addUser} isSignInWindowVisible={this.props.isSignInWindowVisible} hideSignIn={this.props.hideSignIn}/> */}
+        <UserLoginContainer />
+        {/* <AddRoomWindowContainer addRoom={this.addRoom} showAddRoom={this.props.showAddRoom} hideAddRoomWindow={this.props.hideAddRoomWindow}/> */}
+        <AddRoomWindowC />
+        {/* <Navbar isSignInWindowVisible={this.props.isSignInWindowVisible} user={this.state.user}/> */}
+        <UserNavbar />
         <Grid fluid>
           <Row className="contents features">
-            <Rooms rooms={this.props.rooms} switchRoom={this.props.switchRoom} showAddRoomWindow={this.props.showAddRoomWindow} />
-            <Messages user={this.state.user} room={this.state.room} messages={this.state.messages} />
+            {/* <Rooms rooms={this.props.rooms} switchRoom={this.props.switchRoom} showAddRoomWindow={this.props.showAddRoomWindow} /> */}
+            <RoomsC />
+            {/* <MessagesContainer user={this.state.user} room={this.state.room} messages={this.state.messages} /> */}
           </Row>
         </Grid>
       </div>

@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import { Col, Nav, NavItem, Button } from 'react-bootstrap';
+import ShowAddRoomWindowContainer from '../addRoomWindow/addRoomWindow.container'
 
 class Rooms extends Component {
-
   render() {
-
     const allRooms = Object.values(this.props.rooms).map((room, i) => {
         return (
         // use callback this.switchRoom.bind(this.room.id) instead of calling the function right away this.switchRoom(room.id)
-        <NavItem key={room.id} onClick={this.props.switchRoom.bind(this,room.id)} className="room-pills">{room.name}</NavItem>
+        <NavItem key={room.id} className="room-pills">{room.name}</NavItem>
         )
     })
     return (

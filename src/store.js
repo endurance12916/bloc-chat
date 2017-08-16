@@ -1,25 +1,18 @@
 import { createStore, compose, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 
-import rootReducer from './reducers/index';
+import rootReducer from './rootReducer';
 
 // create an object for the default data
 const defaultState = {
-      // rooms: [],
-      // room: {},
-      // users: [],
-      // user: {},
-      // messages: [],
-      // message: {},
-      // showSignIn: false,
-      // showAddRoom: false,
       isFetchingMessages: false,
       isFetchingRooms: false,
       rooms: {},
-      showAddRoom: false,
+      activeRoom: {},
+      isAddRoomWindowVisible: false,
       messages: [],
-      users: {},
-      showSignIn: false,
+      activeUser: {},
+      isSignInWindowVisible: false,
 }
 
 const store = createStore(rootReducer, defaultState, applyMiddleware(thunk));

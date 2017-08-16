@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Modal, Form, FormGroup, FormControl, Button } from 'react-bootstrap'
 
-class AddRoom extends Component {
+class AddRoomWindow extends Component {
 
     handleSubmit = (event) => {
         // preventDefault => page doesn't reload when form is submitted
@@ -11,10 +11,11 @@ class AddRoom extends Component {
     }
 
   render() {
+    console.log('add room window rendered')
     return (
       <div className="modal-container" style={{height: 200}}>
         <Modal
-          show={this.props.showAddRoom}
+          show={this.props.isAddRoomWindowVisible}
           onHide={this.props.hideAddRoomWindow} // onHide is looking for a function
           container={this}
           aria-labelledby="contained-modal-title"
@@ -42,4 +43,4 @@ class AddRoom extends Component {
   }
 };
 
-export default AddRoom;
+export default AddRoomWindow;

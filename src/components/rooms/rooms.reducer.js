@@ -4,14 +4,10 @@ export const isFetchingRooms = (state = [], action) => {
     switch (action.type) {
         case 'START_FETCHING_ROOMS':
           console.log("reducer - start fetching rooms");
-          return Object.assign({}, state, {
-              isFetchingRooms: true
-          });
+          return true;
         case 'RECEIVED_ROOMS':
           console.log("reducer - receiving rooms");
-          return Object.assign({}, state, {
-              isFetchingRooms: false,
-          });
+          return false;
         default:
             return state
     }
@@ -31,7 +27,7 @@ export const isFetchingRooms = (state = [], action) => {
 // }
 function createRoom(state, action) {
   return {
-    id: 'room '+state.length,
+    id: 'room '+action.room.id,
     name: action.room.name
   };
 }
@@ -41,18 +37,15 @@ export const rooms = (state = [], action) => {
     case 'ADD_ROOM':
       console.log("reducer - adding room");
       return [...state, createRoom(state, action)];
-    case 'SWITCH_ROOM':
-      console.log("reducer - switching room");
-      return [...state, { room: action.room }]
     default: 
       return state;
   }
 }
 
-export const showAddRoom = (state = false, action) => {
+export const isAddRoomWindowVisible = (state = false, action) => {
   // action is the action object {type:xxx, property:yyy}. Therefore if no property other than type, need to return true/false instead of action.yyy
   switch(action.type) {
-    case 'SHOW_ADD_ROOM': // only affects the showAddRoom slice of the state tree
+    case 'SHOW_ADD_ROOM': // only affects the isAddRoomWindowVisible slice of the state tree
       console.log("reducer - show add room window");
       return true
     case 'HIDE_ADD_ROOM':

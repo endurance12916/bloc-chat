@@ -1,22 +1,22 @@
 import React, { Component } from 'react';
 import { Modal, Form, FormGroup, FormControl, Button } from 'react-bootstrap';
-import './login.css';
+import './userLogin.css';
 
-class Login extends Component {
+class UsersLogin extends Component {
 
   handleSubmit = (event) => {
       // preventDefault => page doesn't reload when form is submitted
       event.preventDefault();
       let userName = this.userName;
-      this.props.addUser(userName.value);
+      this.props.signUp(userName.value);
   }
 
   render() {
     return (
       <div className="modal-container" style={{height: 200}}>
         <Modal
-          show={this.props.showSignIn}
-          onHide={this.props.hideSignIn}
+          show={this.props.isSignInWindowVisible}
+          onHide={this.props.hideSignInWindow}
           container={this}
           aria-labelledby="contained-modal-title"
         >
@@ -28,7 +28,7 @@ class Login extends Component {
             <FormGroup>
                 <FormControl type="text" placeholder="This name will appear when you set messages" inputRef={(input) => this.userName = input}/>
             </FormGroup>
-            <Button type="submit" onClick={this.props.hideSignIn}>
+            <Button type="submit" onClick={this.props.hideSignInWindow}>
                 Set username
             </Button>
         </Form>
@@ -39,4 +39,4 @@ class Login extends Component {
   }
 };
 
-export default Login;
+export default UsersLogin;
