@@ -30,6 +30,7 @@ export const receivedRooms = () => ({
     type: 'RECEIVED_ROOMS',
 });
 
+
 // Rooms
 export function addRoom(room) {
   return {

@@ -8,6 +8,7 @@ class AddRoomWindow extends Component {
         event.preventDefault();
         let newRoom = {name: this.roomName.value};
         this.props.addRoom(newRoom);
+        this.props.switchRoom()
     }
 
   render() {
