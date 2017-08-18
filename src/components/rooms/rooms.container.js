@@ -30,9 +30,9 @@ class RoomsContainer extends Component {
   }
 
   render() {
-    // const { rooms } = this.props;
+    const { rooms, switchRoom, showAddRoomWindow, hideAddRoomWindow} = this.props;
     return (
-      <Rooms rooms={ this.props.rooms } />
+      <Rooms rooms={rooms} switchRoom={switchRoom} showAddRoomWindow={showAddRoomWindow} hideAddRoomWindow={hideAddRoomWindow}/>
     )
   }
 }
@@ -49,16 +49,15 @@ export const RoomsC = connect(
 
 class AddRoomWindowContainer extends Component {
   render() {
-    console.log('is this visible?', this.props.isAddRoomWindowVisible)
-    const { isAddRoomWindowVisible, hideAddRoomWindow, addRoom } = this.props
+    const { isAddRoomWindowVisible, hideAddRoomWindow, addRoom, switchRoom } = this.props
     return (
       // <AddRoomWindow isAddRoomWindowVisible={this.props.isAddRoomWindowVisible} hideAddRoomWindow={this.props.AddRoomWindow} addRoom={this.props.addRoom}/>
-      <AddRoomWindow isAddRoomWindowVisible={isAddRoomWindowVisible} hideAddRoomWindow={AddRoomWindow} addRoom={addRoom}/>
+      <AddRoomWindow isAddRoomWindowVisible={isAddRoomWindowVisible} hideAddRoomWindow={hideAddRoomWindow} addRoom={addRoom} switchRoom={switchRoom}/>
     )
   }
 }
 
 export const AddRoomWindowC = connect(
   (state) => ({isAddRoomWindowVisible: state.isAddRoomWindowVisible}),
-  (dispatch) => bindActionCreators({hideAddRoomWindow}, dispatch)
+  (dispatch) => bindActionCreators({hideAddRoomWindow, addRoom, switchRoom}, dispatch)
 )(AddRoomWindowContainer);

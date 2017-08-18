@@ -27,7 +27,7 @@ export const isFetchingRooms = (state = [], action) => {
 // }
 function createRoom(state, action) {
   return {
-    id: 'room '+action.room.id,
+    id: 'room '+state.length, // first room's state.length is undefined. Why?
     name: action.room.name
   };
 }

@@ -6,12 +6,11 @@ class AddRoomWindow extends Component {
     handleSubmit = (event) => {
         // preventDefault => page doesn't reload when form is submitted
         event.preventDefault();
-        let roomName = this.roomName;
-        this.props.addRoom(roomName.value);
+        let newRoom = {name: this.roomName.value};
+        this.props.addRoom(newRoom);
     }
 
   render() {
-    console.log('add room window rendered')
     return (
       <div className="modal-container" style={{height: 200}}>
         <Modal
