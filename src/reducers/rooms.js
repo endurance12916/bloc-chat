@@ -39,6 +39,7 @@ function createRoom(state, action) {
 export const rooms = (state = [], action) => {
   switch(action.type) {
     case 'ADD_ROOM':
+      console.log('rooms', state)
       console.log("reducer - adding room");
       return [...state, createRoom(state, action)];
     case 'SWITCH_ROOM':
