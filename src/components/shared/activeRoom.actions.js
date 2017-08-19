@@ -1,6 +1,6 @@
-export function switchRoom(room) {
+export function setActiveRoomAction(room) {
   return {
-    type: 'SWITCH_ROOM',
+    type: 'SET_ACTIVE_ROOM',
     room
   };
-}
+} 

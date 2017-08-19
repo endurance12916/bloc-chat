@@ -3,39 +3,41 @@
 export const isFetchingRooms = (state = [], action) => {
     switch (action.type) {
         case 'START_FETCHING_ROOMS':
-          console.log("reducer - start fetching rooms");
+          console.log("reducer - isFetchingRooms: true");
           return true;
-        case 'RECEIVED_ROOMS':
-          console.log("reducer - receiving rooms");
+        case 'FETCH_ROOMS_FULFILLED':
+          console.log("reducer - isFetchingRooms: false");
           return false;
         default:
             return state
     }
 }
-  
-// const room = (state = [], action) => {
-//   switch(action.type) {
-//     case 'ADD_ROOM':
-//       console.log("reducer - adding room", action);
-      // return [...state, {
-      //   id: 'room '+state.length,
-      //   name: action.name
-      // }];
-//     default: 
-//       return state;
-//   }
-// }
-function createRoom(state, action) {
+
+export const isAddingRoomToServer = (state = [], action) => {
+  switch (action.type) {
+      case 'START_ADDING_ROOM':
+        console.log("reducer - isAddingRoomToServer: true");
+        return true;
+      case 'ADD_ROOM_FULFILLED':
+        console.log("reducer - isAddingRoomToServer: false");
+        return false;
+      default:
+          return state
+  }
+}
+
+function createRoom(state = [], action) {
   return {
-    id: 'room '+state.length, // first room's state.length is undefined. Why?
+    id: action.room.id, // first room's state.length is undefined. Why? Is this the best way to fix?
     name: action.room.name
   };
 }
 
 export const rooms = (state = [], action) => {
   switch(action.type) {
-    case 'ADD_ROOM':
-      console.log("reducer - adding room");
+    case 'FETCH_ROOMS_FULFILLED':
+    // case 'ADD_ROOM_FULFILLED':
+      console.log("reducer - fetch rooms/add room fulfilled");
       return [...state, createRoom(state, action)];
     default: 
       return state;

@@ -96,15 +96,15 @@ class Main extends Component {
     }
   }
 
-  addRoom = (name) => {
-    const newRoom = {
-      id: 'room '+(Object.values(this.state.rooms).length),
-      name: name
-    }
-    firebase.database().ref('rooms/'+newRoom.id).set(newRoom)
-    this.setState({room:newRoom})
+  // addRoom = (name) => {
+  //   const newRoom = {
+  //     id: 'room '+(Object.values(this.state.rooms).length),
+  //     name: name
+  //   }
+  //   firebase.database().ref('rooms/'+newRoom.id).set(newRoom)
+  //   this.setState({room:newRoom})
     // this.props.addRoom(newRoom)
-  }
+  // }
 
   addUser = (name) => {
     const newUser = {

@@ -5,11 +5,12 @@ import rootReducer from './rootReducer';
 
 // create an object for the default data
 const defaultState = {
-      isFetchingMessages: false,
       isFetchingRooms: false,
+      isAddingRoomToServer: false,
       rooms: {},
       activeRoom: {},
       isAddRoomWindowVisible: false,
+      isFetchingMessages: false,
       messages: [],
       activeUser: {},
       isSignInWindowVisible: false,

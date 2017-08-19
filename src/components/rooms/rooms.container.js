@@ -1,20 +1,21 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { fetchRooms, addRoom, showAddRoomWindow, hideAddRoomWindow } from './rooms.actions';
-import { switchRoom } from '../shared/activeRoom.actions'
+import { fetchAllRooms, addRoom, subscribeToRooms, showAddRoomWindow, hideAddRoomWindow } from './rooms.actions';
+import { setActiveRoomAction } from '../shared/activeRoom.actions'
 import Rooms from './rooms.component';
 import AddRoomWindow from './addRoomWindow.component';
 import _ from 'lodash';
 
 class RoomsContainer extends Component {
   componentWillMount() {
-    // let { fetchRooms } = this.props;
-    this.props.fetchRooms();
-    this.props.switchRoom({
-        id: 'room 0',
-        name: 'Public Room'
-      })
+    // let { fetchAllRooms } = this.props;
+    this.props.fetchAllRooms();
+    this.props.subscribeToRooms();
+    // this.props.setActiveRoomAction({
+    //     id: 'room 0',
+    //     name: 'Public Room'
+    //   })
   }
 
   componentDidMount() {
@@ -25,14 +26,14 @@ class RoomsContainer extends Component {
     //     name: 'Public Room'
     //   }
     //   this.props.addRoom(defaultRoom);
-    //   this.props.switchRoom(defaultRoom);
+    //   this.props.setActiveRoomAction(defaultRoom);
     // }
   }
 
   render() {
-    const { rooms, switchRoom, showAddRoomWindow, hideAddRoomWindow} = this.props;
+    const { rooms, subscribeToRooms, setActiveRoomAction, showAddRoomWindow, hideAddRoomWindow} = this.props;
     return (
-      <Rooms rooms={rooms} switchRoom={switchRoom} showAddRoomWindow={showAddRoomWindow} hideAddRoomWindow={hideAddRoomWindow}/>
+      <Rooms rooms={rooms} subscribeToRooms={subscribeToRooms} setActiveRoomAction={setActiveRoomAction} showAddRoomWindow={showAddRoomWindow} hideAddRoomWindow={hideAddRoomWindow}/>
     )
   }
 }
@@ -43,21 +44,21 @@ export const RoomsC = connect(
     rooms: state.rooms, // -> this.props.rooms = state.rooms
     activeRoom: state.activeRoom,
   }),
-  (dispatch) => bindActionCreators({showAddRoomWindow, fetchRooms, switchRoom }, dispatch)
+  (dispatch) => bindActionCreators({subscribeToRooms, showAddRoomWindow, fetchAllRooms, setActiveRoomAction }, dispatch)
 )(RoomsContainer);
 
 
 class AddRoomWindowContainer extends Component {
   render() {
-    const { isAddRoomWindowVisible, hideAddRoomWindow, addRoom, switchRoom } = this.props
+    const { rooms, isAddRoomWindowVisible, hideAddRoomWindow, addRoom, setActiveRoomAction } = this.props
     return (
       // <AddRoomWindow isAddRoomWindowVisible={this.props.isAddRoomWindowVisible} hideAddRoomWindow={this.props.AddRoomWindow} addRoom={this.props.addRoom}/>
-      <AddRoomWindow isAddRoomWindowVisible={isAddRoomWindowVisible} hideAddRoomWindow={hideAddRoomWindow} addRoom={addRoom} switchRoom={switchRoom}/>
+      <AddRoomWindow rooms={rooms} isAddRoomWindowVisible={isAddRoomWindowVisible} hideAddRoomWindow={hideAddRoomWindow} addRoom={addRoom} setActiveRoomAction={setActiveRoomAction}/>
     )
   }
 }
 
 export const AddRoomWindowC = connect(
-  (state) => ({isAddRoomWindowVisible: state.isAddRoomWindowVisible}),
-  (dispatch) => bindActionCreators({hideAddRoomWindow, addRoom, switchRoom}, dispatch)
+  (state) => ({rooms: state.rooms, isAddRoomWindowVisible: state.isAddRoomWindowVisible}),
+  (dispatch) => bindActionCreators({hideAddRoomWindow, addRoom, setActiveRoomAction}, dispatch)
 )(AddRoomWindowContainer);

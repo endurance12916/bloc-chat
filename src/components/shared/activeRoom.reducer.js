@@ -1,10 +1,9 @@
 export const activeRoom = (state = {}, action) => {
   switch(action.type) {
-    case 'SWITCH_ROOM':
-      console.log(action)
-      console.log("reducer - switching room to", action.room);
-      return action.room;
-    default: 
+    case 'SET_ACTIVE_ROOM':
+      console.log("reducer - set active room to ", action.room);
+      return action.room; // room=Proxy.... What does that mean?
+    default:
       return state;
   }
 }
