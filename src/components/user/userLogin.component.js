@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Modal, Form, FormGroup, FormControl, Button } from 'react-bootstrap';
 import './userLogin.css';
+import Cookies from 'js-cookie';
 
 class UsersLogin extends Component {
 
@@ -8,7 +9,9 @@ class UsersLogin extends Component {
       // preventDefault => page doesn't reload when form is submitted
       event.preventDefault();
       let userName = this.userName;
-      this.props.signUp(userName.value);
+      this.props.setActiveUser(userName.value);
+      Cookies.set('user', {userName});
+      console.log('check if set user correctly',Cookies.get('user'))
   }
 
   render() {

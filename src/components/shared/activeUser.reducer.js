@@ -1,7 +1,7 @@
 export const activeUser = (state = {}, action) => {
   switch(action.type) {
-    case 'SIGN_UP':
-      console.log("reducer - user signing up");
+    case 'SET_ACTIVE_USER':
+      console.log("reducer - setting active user");
       return {
         name: action.name
       }

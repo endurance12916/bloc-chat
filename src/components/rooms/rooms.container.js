@@ -12,6 +12,8 @@ class RoomsContainer extends Component {
     // let { fetchAllRooms } = this.props;
     this.props.fetchAllRooms();
     this.props.subscribeToRooms();
+    console.log('isempty in componentWillMount', _.isEmpty(this.props.rooms))
+    console.log('rooms', this.props.rooms)
     // this.props.setActiveRoomAction({
     //     id: 'room 0',
     //     name: 'Public Room'
@@ -19,7 +21,8 @@ class RoomsContainer extends Component {
   }
 
   componentDidMount() {
-    console.log('isempty', _.isEmpty(this.props.activeRoom)) // this always happens before the first fetch? How to check if it's empty after all the fetchings?
+    console.log('isempty in componentDidMount', _.isEmpty(this.props.rooms)) // this always happens before the first fetch? How to check if it's empty after all the fetchings?
+    console.log('rooms', this.props.rooms)
     // if (_.isEmpty(this.props.activeRoom)&&_.isEmpty(this.props.rooms)) {
     //   const defaultRoom = {
     //     id: 'room 0',

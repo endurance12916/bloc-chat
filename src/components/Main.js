@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './Main.css';
-import UserNavbar from './user/userNavbar.component';
+import UserNavbarContainer from './user/userNavbar.container';
 import UserLoginContainer from './user/userLogin.container';
 // import AddRoomWindowContainer from './addRoomWindow/addRoomWindow.container';
 import { RoomsC, AddRoomWindowC } from './rooms/rooms.container.js';
@@ -23,11 +23,11 @@ class Main extends Component {
   constructor() {
     super();
     this.state = {
-      rooms: [],
-      room: {},
-      users: [],
-      user: {},
-      messages: [],
+      // rooms: [],
+      // room: {},
+      // users: [],
+      // user: {},
+      // messages: [],
       // isSignInWindowVisible: false,
       // showAddRoom: false,
     }
@@ -58,43 +58,43 @@ class Main extends Component {
     // this.props.fetchRooms();
     // this.props.fetchMessages(this.props.room.id) // make sure this is expressed in state tree (rename to active room)
 
-    const user = Cookies.get('user');
-    this.setState({ 
-      user: user ? JSON.parse(user) : undefined,
-      isSignInWindowVisible: !user
-    });
+    // const user = Cookies.get('user');
+    // this.setState({ 
+    //   user: user ? JSON.parse(user) : undefined,
+    //   isSignInWindowVisible: !user
+    // });
 
-    firebase.database().ref('rooms/').on('value', (snapshot) => {
-      const allRooms = snapshot.val();
-      if (allRooms !== null) {
-        this.setState({rooms: allRooms});
-      }
-    })
+    // firebase.database().ref('rooms/').on('value', (snapshot) => {
+    //   const allRooms = snapshot.val();
+    //   if (allRooms !== null) {
+    //     this.setState({rooms: allRooms});
+    //   }
+    // })
 
     // the on() method allows syncing data in real time. To use it, attach it to a Ref -> everytime data changes at the location of rooms, it provides this callback function that returns a new set of data
-    firebase.database().ref('messages/room 0/').on('value', (snapshot) => {
-      const allMessages = snapshot.val();
-      if (allMessages != null) {
-        this.setState({messages: allMessages});
-      }
-    });
+    // firebase.database().ref('messages/room 0/').on('value', (snapshot) => {
+    //   const allMessages = snapshot.val();
+    //   if (allMessages != null) {
+    //     this.setState({messages: allMessages});
+    //   }
+    // });
   }
 
-  componentWillUpdate = (newProps, newState) => {
-    if (newState.room !== this.state.room) {
-      this.setState({room:newState.room}, () => {
-        const roomNum = newState.room.id
-        firebase.database().ref('messages/'+roomNum+'/').on('value', (snapshot) => {
-          const allMessages = snapshot.val();
-          if (allMessages !== null) {
-            this.setState({messages: allMessages});
-          } else {
-            this.setState({messages: []})
-          }
-        });
-      })
-    }
-  }
+  // componentWillUpdate = (newProps, newState) => {
+  //   if (newState.room !== this.state.room) {
+  //     this.setState({room:newState.room}, () => {
+  //       const roomNum = newState.room.id
+  //       firebase.database().ref('messages/'+roomNum+'/').on('value', (snapshot) => {
+  //         const allMessages = snapshot.val();
+  //         if (allMessages !== null) {
+  //           this.setState({messages: allMessages});
+  //         } else {
+  //           this.setState({messages: []})
+  //         }
+  //       });
+  //     })
+  //   }
+  // }
 
   // addRoom = (name) => {
   //   const newRoom = {
@@ -106,15 +106,15 @@ class Main extends Component {
     // this.props.addRoom(newRoom)
   // }
 
-  addUser = (name) => {
-    const newUser = {
-      id: 'user '+(Object.values(this.state.users).length),
-      name: name
-    }
-    firebase.database().ref('users/'+newUser.id).set(newUser)
-    this.setState({user:newUser})
-    Cookies.set('user', newUser);
-  }
+  // addUser = (name) => {
+  //   const newUser = {
+  //     id: 'user '+(Object.values(this.state.users).length),
+  //     name: name
+  //   }
+  //   firebase.database().ref('users/'+newUser.id).set(newUser)
+  //   this.setState({user:newUser})
+  //   Cookies.set('user', newUser);
+  // }
 
   // openSignIn = () => {
   //   this.setState({ isSignInWindowVisible: true})
@@ -132,14 +132,14 @@ class Main extends Component {
   //   this.setState({ showAddRoom: false})
   // }
 
-  switchRoom = (key) => {
-    let roomRef = firebase.database().ref('rooms/'+key)
-    roomRef.on("value", function(snapshot) {
-      this.setState({room:snapshot.val()})
-    }.bind(this), function (errorObject) {
-      console.log("The read failed: " + errorObject.code);
-    });
-  }
+  // switchRoom = (key) => {
+  //   let roomRef = firebase.database().ref('rooms/'+key)
+  //   roomRef.on("value", function(snapshot) {
+  //     this.setState({room:snapshot.val()})
+  //   }.bind(this), function (errorObject) {
+  //     console.log("The read failed: " + errorObject.code);
+  //   });
+  // }
 
   render() {
     // cookie -> serialized into a JSON string, when you retrieve data from cookie, need to parse it
@@ -164,7 +164,7 @@ class Main extends Component {
         {/* <AddRoomWindowContainer addRoom={this.addRoom} showAddRoom={this.props.showAddRoom} hideAddRoomWindow={this.props.hideAddRoomWindow}/> */}
         <AddRoomWindowC />
         {/* <Navbar isSignInWindowVisible={this.props.isSignInWindowVisible} user={this.state.user}/> */}
-        <UserNavbar />
+        <UserNavbarContainer />
         <Grid fluid>
           <Row className="contents features">
             {/* <Rooms rooms={this.props.rooms} switchRoom={this.props.switchRoom} showAddRoomWindow={this.props.showAddRoomWindow} /> */}
