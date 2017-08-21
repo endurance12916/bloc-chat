@@ -1,36 +1,40 @@
-// connect
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import * as actionCreators from '../actions/actionCreators';
-import Main from './Main';
+import React, { Component } from 'react';
+import './App.css';
+import UserNavbarContainer from './user/userNavbar.container';
+import UserLoginContainer from './user/userLogin.container';
+import { RoomsC, AddRoomWindowC } from './rooms/rooms.container.js';
+import MessagesContainer from './messages/messages.container';
+import * as firebase from 'firebase';
+import { Grid, Row } from 'react-bootstrap';
+import Cookies from 'js-cookie';
 
-// insert data into the component
-// this function accepts state and then returns an object of props
-function mapStateToProps(state) {
-  return {
-    isFetchingMessages: state.isFetchingMessages,
-    isFetchingRooms: state.isFetchingRooms,
-    rooms: state.rooms, // -> this.props.rooms = state.rooms
-    activeRoom: state.activeRoom,
-    isAddRoomWindowVisible: state.isAddRoomWindowVisible,
-    currentMessage: state.currentMessage,
-    messages: state.messages,
-    users: state.users,
-    isSignInWindowVisible: state.isSignInWindowVisible
+const config = {
+    apiKey: "AIzaSyCXeADl350Vv4FALlgr4O4VtWztXWJFw3g",
+    authDomain: "bloc-chat-4d62e.firebaseapp.com",
+    databaseURL: "https://bloc-chat-4d62e.firebaseio.com",
+    projectId: "bloc-chat-4d62e",
+    storageBucket: "bloc-chat-4d62e.appspot.com",
+    messagingSenderId: "393276418132"
+};
+firebase.initializeApp(config);
+
+// since this component doesn't need any props, do I still need the App container?
+class App extends Component {
+  render() {
+    return (
+      <div className="App">
+        <UserLoginContainer />
+        <AddRoomWindowC />
+        <UserNavbarContainer />
+        <Grid fluid>
+          <Row className="contents features">
+            <RoomsC />
+            <MessagesContainer />
+          </Row>
+        </Grid>
+      </div>
+    );
   }
 }
 
-// insert actions into the component
-// this function is able to dispatch our action creator with a prop.
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators(actionCreators, dispatch)
-}
-
-// all action creators and all data(states) are now available to the Main component
-const App = connect(mapStateToProps, mapDispatchToProps)(Main);
-
 export default App;
-
-// or put all these code into Main.js and 
-// export default connect(mapStateToProps, mapDispatchToProps)(Main);
-// and rename Main back to App

@@ -28,9 +28,9 @@ class Messages extends Component {
     } else if (_.isEmpty(this.props.activeRoom)) {
       return alert('Please select or create a room first.')
     } else {
-      console.log('this.props.currentMessage', this.props.currentMessage)
+      console.log('this.props.currentMessage in messages.component', this.props.currentMessage)
       const nextMessage = {
-        username: this.props.activeUser.name,
+        username: this.props.activeUser.username,
         // roomId: this.props.activeRoom.id,
         createdAt: Date.now(),
         text: this.props.currentMessage
