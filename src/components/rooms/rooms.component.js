@@ -8,7 +8,7 @@ class Rooms extends Component {
         return (
         // use callback this.switchRoom.bind(this.room.id) instead of calling the function right away this.switchRoom(room.id)
         // to avoid Redux calling a proxy object, use arrow function to bind
-        <NavItem key={room.id} onClick={() => this.props.setActiveRoomAction(room)} className="room-pills">{room.name}</NavItem>
+        <NavItem key={room.id} onClick={() => this.props.setActiveRoom(room)} className="room-pills">{room.name}</NavItem>
         )
     })
     return (

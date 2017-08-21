@@ -5,13 +5,6 @@ import debounce from 'lodash/debounce';
 import * as firebase from 'firebase';
 
 class Messages extends Component {
-  constructor() {
-    super();
-    this.state = {
-      message: {}
-    }
-  }
-
   // Should I always put debounce function inside of a lifecycle method?
   componentWillUpdate() {
     this.debounceUpdateMessage = debounce(this.updateMessage, 200); 
@@ -24,21 +17,26 @@ class Messages extends Component {
 
   updateMessage = (event) => {
     event.persist();
-    this.setState({message: event.target.value})
+    console.log(event.target.value) // this correctly returns the string I typed in
+    this.props.updateCurrentMessage(event.target.value) // this function is not working, because the log below always displays the default message, not the message I typed in
+    console.log(this.props.currentMessage) 
   }
 
   submitMessage = (event) => {
-    if (_.isEmpty(this.props.user)) {
-      return alert('Please sign in first!')
+    if (_.isEmpty(this.props.activeUser)) {
+      return alert('Please sign in first.')
+    } else if (_.isEmpty(this.props.activeRoom)) {
+      return alert('Please select or create a room first.')
     } else {
+      console.log('this.props.currentMessage', this.props.currentMessage)
       const nextMessage = {
-        userId: this.props.user.id,
-        username: this.props.user.name,
+        username: this.props.activeUser.name,
+        // roomId: this.props.activeRoom.id,
         createdAt: Date.now(),
-        text: this.state.message
+        text: this.props.currentMessage
       }
       
-      firebase.database().ref(('messages/'+this.props.room.id)+'/'+nextMessage.createdAt).set(nextMessage)
+      this.props.addMessage(nextMessage, this.props.activeRoom.id);
       this.messageText.value="";
     }
   }

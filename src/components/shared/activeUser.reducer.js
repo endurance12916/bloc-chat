@@ -3,7 +3,7 @@ export const activeUser = (state = {}, action) => {
     case 'SET_ACTIVE_USER':
       console.log("reducer - setting active user");
       return {
-        name: action.name
+        username: action.username
       }
     default: 
       return state;

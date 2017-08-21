@@ -19,20 +19,8 @@ const config = {
 };
 firebase.initializeApp(config);
 
+// since this component doesn't need any props, do I still need the App container?
 class Main extends Component {
-  constructor() {
-    super();
-    this.state = {
-      // rooms: [],
-      // room: {},
-      // users: [],
-      // user: {},
-      // messages: [],
-      // isSignInWindowVisible: false,
-      // showAddRoom: false,
-    }
-  }
-  // this component now only has setState methods, all else have been moved to other respective components. Is it ideal now?
 
   // 3 setStates in componentDidMount() cause the page to be rendered 3 times at start, is there a better way?
 
@@ -170,6 +158,7 @@ class Main extends Component {
             {/* <Rooms rooms={this.props.rooms} switchRoom={this.props.switchRoom} showAddRoomWindow={this.props.showAddRoomWindow} /> */}
             <RoomsC />
             {/* <MessagesContainer user={this.state.user} room={this.state.room} messages={this.state.messages} /> */}
+            <MessagesContainer />
           </Row>
         </Grid>
       </div>

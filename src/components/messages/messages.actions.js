@@ -1,47 +1,64 @@
-import * as firebase from 'firebase';
-// Fetch Messages
-export const fetchMessages = (roomId) => {
-  return function (dispatch) {
-    dispatch(startFetchingMessages());
-    firebase.database()
-            .ref('messages/'+roomId+'/') // how to get room.id?
-            .on('value', (snapshot) => {
-              setTimeout(() => {
-                const messages = snapshot.val() || [];
-                dispatch(receiveMessages(messages))
-              }, 0);
-            });
-    }
-}
-export const receiveMessages = (messages) => {
-  return function (dispatch) {
-    Object.values(messages).forEach(msg => dispatch(addMessage(msg)));
-    dispatch(receivedMessages());
-  }
-}
+// import * as firebase from 'firebase';
 
-export const startFetchingMessages = () => ({
-    type: 'START_FETCHING_MESSAGES'
-});
+// Moved below to shared because fetch should happen after change room
+// export const fetchAllMessages = (roomId) => {
+//   return function (dispatch) {
+//     dispatch(fetchMessagesRequestedAction());
+//     firebase.database()
+//             .ref('messages/'+roomId+'/')
+//             .once('value', (snapshot) => {
+//               setTimeout(() => {
+//                 const messages = snapshot.val() || [];
+//                 Object.values(messages).forEach(message => dispatch(fetchMessagesFulfilledAction(message)));
+//               }, 0);
+//             })
+//     }
+// }
 
-export const receivedMessages = () => ({
-    type: 'RECEIVED_MESSAGES',
-});
+// const fetchMessagesRequestedAction = () => ({
+//     type: 'START_FETCHING_MESSAGES'
+// });
 
-export function addMessage(userId, username, text) {
-  return {
-    type: 'ADD_MESSAGE', // what happened
-    userId,  // what needs to change
-    username, // same as username: username
-    text
-  };
-}
+// const fetchMessagesFulfilledAction = (message) => ({
+//     type: 'FETCH_MESSAGES_FULFILLED',
+//     message
+// });
 
-export function sendMessage(userId, username, text) {
-  return {
-    type: 'ADD_MESSAGE', // what happened
-    userId,  // what needs to change
-    username, // same as username: username
-    text
-  };
-}
+// // Works fine until I refersh the page.
+// export const subscribeToMessages = (roomId) => {
+//   return function(dispatch) {
+//     firebase.database()
+//     .ref('messages/'+roomId+'/')
+//     .on('child_added', (snap) => {
+//       dispatch(fetchMessagesFulfilledAction(snap.val())
+//     )}
+//     );
+//   }
+// }
+
+// export const addMessage = (message) => {
+//   return function (dispatch) {
+//     dispatch(addMessageRequestedAction());
+//     const messagesRef = firebase.database().ref('messages/')
+//     messagesRef.push(message)
+//             .then(() => {
+//               dispatch(addMessageFulfilledAction(message));
+//             })
+//             .catch((error) => {
+//               dispatch(addMessageRejectedAction());
+//             });
+//   }
+// }
+
+// const addMessageRequestedAction = () => ({
+//   type: 'START_ADDING_MESSAGE'
+// });
+
+// const addMessageFulfilledAction = (message) => ({
+//   type: 'ADD_MESSAGE_FULFILLED',
+//   message
+// });
+
+// const addMessageRejectedAction = () => ({
+//   type: 'ADD_MESSAGE_REJECTED',
+// });

@@ -13,6 +13,7 @@ function mapStateToProps(state) {
     rooms: state.rooms, // -> this.props.rooms = state.rooms
     activeRoom: state.activeRoom,
     isAddRoomWindowVisible: state.isAddRoomWindowVisible,
+    currentMessage: state.currentMessage,
     messages: state.messages,
     users: state.users,
     isSignInWindowVisible: state.isSignInWindowVisible

@@ -13,7 +13,7 @@ class UserNavbar extends Component {
       }
       else {
         return (
-          <NavDropdown id={1} title={this.props.activeUser.name} >
+          <NavDropdown id={1} title={this.props.activeUser.username} >
             <MenuItem eventKey={1.1}>One button</MenuItem>
             <MenuItem eventKey={1.2}>Another button</MenuItem>
             <MenuItem divider />

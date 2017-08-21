@@ -1,85 +1,45 @@
-// reducer takes in 1. action(what happened) 2. copy of current state
-// action is the action object from the actionCreators -> {type: 'xxx', a: yyy}
+// every reducer runs when there's an action. need to write logic inside reducers to let them know if they should change a state (use switch statement).
+// every reducer will return a discrete property of the state, regardless of how many conditions are inside that reducer. 
+// export const isFetchingMessages = (state = [], action) => {
+//   switch (action.type) {
+//       case 'START_FETCHING_MESSAGES':
+//         console.log("reducer - isFetchingMessages: true");
+//         return true;
+//       case 'FETCH_MESSAGES_FULFILLED':
+//         console.log("reducer - isFetchingMessages: false");
+//         return false;
+//       default:
+//           return state
+//   }
+// }
 
-import * as firebase from 'firebase';
+// export const isAddingMessageToServer = (state = [], action) => {
+//   switch (action.type) {
+//       case 'START_ADDING_MESSAGE':
+//         console.log("reducer - isAddingMessageToServer: true");
+//         return true;
+//       case 'ADD_MESSAGE_FULFILLED':
+//         console.log("reducer - isAddingMessageToServer: false");
+//         return false;
+//       default:
+//           return state
+//   }
+// }
 
-export const isFetchingMessages = (state = [], action) => {
-    switch (action.type) {
-        case 'START_FETCHING_MESSAGES':
-          console.log("reducer - start fetching messages");
-          return Object.assign({}, state, {
-              isFetchingMessages: true
-          });
-        case 'RECEIVED_MESSAGES':
-          console.log("reducer - receiving messages");
-          return Object.assign({}, state, {
-              isFetchingMessages: false,
-          });
-        default:
-            return state
-    }
-}
+// function createMessage(state = [], action) {
+//   return {
+//     userId: action.user.id,
+//     username: action.user.name,
+//     createdAt: Date.now(),
+//     text: action.message
+//   }
+// }
 
-export const message = (state, action) => {
-    switch (action.type) {
-        case 'ADD_MESSAGE':
-          return {
-            userId: action.user.id,
-            username: action.user.name,
-            createdAt: Date.now(),
-            text: action.message
-          }
-        case 'SEND_MESSAGE':
-          let msg = {
-            userId: action.user.id,
-            username: action.user.name,
-            createdAt: Date.now(),
-            text: action.message
-          };
-          const newMsgRef = firebase.database()
-                                    .ref(('messages/'+this.props.room.id)+'/'+msg.createdAt) // how to get room.id?
-                                    .push();
-          msg.id = newMsgRef.key;
-          newMsgRef.set(msg);
-          return msg;
-        default:
-          return state
-    }
-}
-
-export const messages = (state = [], action) => {
-    switch (action.type) {
-        case 'ADD_MESSAGE':
-          console.log("reducer - adding message");
-          if (state.map(m => m.userId).includes(action.user.id)) {
-              return state;
-          }else{
-              return [
-              ...state,
-              message(undefined, action)
-              ]
-          }
-        case 'SEND_MESSAGE':
-          console.log("reducer - sending message");
-          return [
-              ...state,
-              message(undefined, action)
-          ]
-        default:
-          return state
-    }
-};
-  
 // export const messages = (state = [], action) => {
 //   switch(action.type) {
-//     case 'ADD_MESSAGE':
-//       console.log("reducer - adding message");
-//       return [...state, {
-//         userId: action.user.id,
-//         username: action.user.name,
-//         createdAt: Date.now(),
-//         text: action.message
-//       }]
+//     case 'FETCH_MESSAGES_FULFILLED':
+//       console.log("reducer - fetch Messages/add Message fulfilled");
+//       return [...state, createMessage(state, action)];
 //     default: 
 //       return state;
 //   }

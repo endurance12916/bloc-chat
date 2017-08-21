@@ -1,15 +1,16 @@
 import { combineReducers } from 'redux';
 
-import { isFetchingMessages, messages } from './components/messages/messages.reducer';
+// import { isAddingMessageToServer } from './components/messages/messages.reducer';
 import { isFetchingRooms, isAddingRoomToServer, rooms, isAddRoomWindowVisible } from './components/rooms/rooms.reducer';
-// import { isAddRoomWindowVisible } from './components/addRoomWindow/addRoomWindow.reducer';
 import { isSignInWindowVisible } from './components/user/user.reducer';
-import { activeRoom } from './components/shared/activeRoom.reducer'
+import { activeRoom, isFetchingMessages, messages, currentMessage, isAddingMessageToServer } from './components/shared/activeRoom.reducer'
 import { activeUser } from './components/shared/activeUser.reducer'
 
 const rootReducer = combineReducers({
   isFetchingMessages,
+  isAddingMessageToServer,
   messages,
+  currentMessage,
   isFetchingRooms,
   isAddingRoomToServer,
   rooms,

@@ -1,18 +1,15 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import * as actionCreators from './messages.actions';
+import { fetchAllMessages, subscribeToMessages, addMessage, updateCurrentMessage } from '../shared/activeRoom.actions';
 import Messages from './messages.component';
 
 class MessagesContainer extends Component {
-  componentWillMount() {
-    let { fetchMessages } = this.props;
-    fetchMessages();
-  }
+
   render() {
-    const { messages } = this.props;
+    const { messages, currentMessage, isFetchingMessages, addMessage, isAddingMessageToServer, activeUser, activeRoom } = this.props;
     return (
-      <Messages messages={ messages } />
+      <Messages messages={messages} currentMessage={currentMessage} updateCurrentMessage={updateCurrentMessage} isFetchingMessages={isFetchingMessages} addMessage={addMessage} isAddingMessageToServer={isAddingMessageToServer} activeRoom={activeRoom} activeUser={activeUser}/>
     )
   }
 }
@@ -20,18 +17,20 @@ class MessagesContainer extends Component {
 // insert data into the component
 // this function accepts state and then returns an object of props
 function mapStateToProps(state) {
-  console.log('state.activeRoom in message',state.activeRoom)
   return {
     isFetchingMessages: state.isFetchingMessages,
-    messages: state.messages, // -> this.props.messages = state.messages
-    activeRoom: state.activeRoom
+    isAddingMessageToServer: state.isAddingMessageToServer,
+    messages: state.messages, // so that -> this.props.messages = state.messages
+    currentMessage: state.currentMessage,
+    activeRoom: state.activeRoom,
+    activeUser: state.activeUser
   }
 }
 
 // insert actions into the component
 // this function is able to dispatch our action creator with a prop.
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(actionCreators, dispatch)
+  return bindActionCreators({fetchAllMessages, subscribeToMessages, addMessage, updateCurrentMessage}, dispatch)
 }
 
 // all action creators and all data(states) are now available to the Main component

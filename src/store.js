@@ -11,7 +11,9 @@ const defaultState = {
       activeRoom: {},
       isAddRoomWindowVisible: false,
       isFetchingMessages: false,
+      isAddingMessageToServer: false,
       messages: [],
+      currentMessage: 'default message',
       activeUser: {},
       isSignInWindowVisible: false,
 }

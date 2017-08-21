@@ -10,8 +10,8 @@ class UsersLogin extends Component {
       event.preventDefault();
       let userName = this.userName;
       this.props.setActiveUser(userName.value);
-      Cookies.set('user', {userName});
-      console.log('check if set user correctly',Cookies.get('user'))
+      Cookies.set('user', userName.value);
+      console.log('username', userName.value)
   }
 
   render() {

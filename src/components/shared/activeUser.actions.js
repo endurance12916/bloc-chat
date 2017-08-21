@@ -1,6 +1,6 @@
-export function setActiveUser(name) {
+export function setActiveUser(username) {
   return {
     type: 'SET_ACTIVE_USER',
-    name
+    username
   };
 }
