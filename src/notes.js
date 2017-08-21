@@ -7,4 +7,4 @@
 // 7. argument action passed into reducers is the action object {type:xxx, property:yyy}. Therefore if no property other than type, need to return true/false instead of action.yyy
 // 8. cookie -> serialized into a JSON string, when you retrieve data from cookie, need to parse it //console.log('type', typeof this.state.user) -> user would be a string
 // 9. under render(), anything that has HTML can be put here, but no function that calls setState immediately
-
+// 10. onHide is looking for a function

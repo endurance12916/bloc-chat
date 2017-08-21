@@ -9,7 +9,7 @@ class AddRoomWindow extends Component {
         let id = this.props.rooms.length||0;
         let newRoom = {id: 'room '+ id, name: this.roomName.value};
         this.props.addRoom(newRoom);
-        // this.props.switchRoom()
+        this.props.setActiveRoom(newRoom);
     }
 
   render() {

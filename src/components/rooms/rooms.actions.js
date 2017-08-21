@@ -23,9 +23,9 @@ const fetchRoomsFulfilledAction = (room) => ({
     room
 });
 
-// Works fine until I refersh the page. the below error pops up after refresh:
+// Works fine until I refersh the page. If I have at least one room in database, the below error will pop up after refresh:
 // Warning: flattenChildren(...): Encountered two children with the same key, `.$room 0`. Child keys must be unique; when two children share a key, only the first child will be used.
-// I think it's due to 'child_added'. I tried adding 'limitToLast(1)' but didn't work
+// It seems like it's trying to perform the fetch action once for every room in the databse. I think it's due to 'child_added'. I tried adding 'limitToLast(1)' but didn't work
 export const subscribeToRooms = () => {
   return function(dispatch) {
     firebase.database()
