@@ -8,3 +8,4 @@
 // 8. cookie -> serialized into a JSON string, when you retrieve data from cookie, need to parse it //console.log('type', typeof this.state.user) -> user would be a string
 // 9. under render(), anything that has HTML can be put here, but no function that calls setState immediately
 // 10. onHide is looking for a function
+// 11. import { Provider } from 'react-redux'; // Provider provides context - {store: this.props.store} to its children by rendering this.props.children
