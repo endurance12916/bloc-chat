@@ -1,12 +1,12 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Bloc Chat",
+  "name": "Bloc Chat App",
   "icons": [
-    {
-      "src": "favicon.ico",
-      "sizes": "192x192",
-      "type": "image/png"
-    }
+    // {
+    //   "src": "favicon.ico",
+    //   "sizes": "192x192",
+    //   "type": "image/png"
+    // }
   ],
   "start_url": "./index.html",
   "display": "standalone",
