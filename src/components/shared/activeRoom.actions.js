@@ -9,29 +9,32 @@ function setActiveRoomAction(room) {
 
 // weird behavior: if I switch room, it will render messages from both rooms. How do I fix that?
 // this action is called in component/rooms/rooms.component.js
+
+// is it possible to refer to state in here?
 export const setActiveRoom = (room) => {
-  console.log('setActiveRoom action', room)
+  // clean the room before subscribe
   return function (dispatch) {
+    dispatch(removeDisplayedMessagesAction());
     dispatch(setActiveRoomAction(room));
-    dispatch(fetchAllMessages(room.id)); 
+    // dispatch(fetchAllMessages(room.id)); 
     dispatch(subscribeToMessages(room.id)); 
   }
 }
 
-export const fetchAllMessages = (roomId) => {
-  return function (dispatch) {
-    console.log('fetchAllMessages route', ('messages/'+roomId+'/'))
-    dispatch(fetchMessagesRequestedAction());
-    firebase.database()
-            .ref('messages/'+roomId+'/')
-            .once('value', (snapshot) => {
-              setTimeout(() => {
-                const messages = snapshot.val() || [];
-                Object.values(messages).forEach(message => dispatch(fetchMessagesFulfilledAction(message)));
-              }, 0);
-            })
-    }
-}
+// export const fetchAllMessages = (roomId) => {
+//   return function (dispatch) {
+//     console.log('fetchAllMessages route', ('messages/'+roomId+'/'))
+//     dispatch(fetchMessagesRequestedAction());
+//     firebase.database()
+//             .ref('messages/'+roomId+'/')
+//             .once('value', (snapshot) => {
+//               setTimeout(() => {
+//                 const messages = snapshot.val() || [];
+//                 Object.values(messages).forEach(message => dispatch(fetchMessagesFulfilledAction(message)));
+//               }, 0);
+//             })
+//     }
+// }
 
 const fetchMessagesRequestedAction = () => ({
     type: 'START_FETCHING_MESSAGES'
@@ -43,7 +46,6 @@ const fetchMessagesFulfilledAction = (message) => ({
 });
 
 export const subscribeToMessages = (roomId) => {
-  console.log('subscribe to messages')
   return function(dispatch) {
     firebase.database()
     .ref('messages/'+roomId+'/')
@@ -82,9 +84,12 @@ const addMessageRejectedAction = () => ({
 });
 
 export function updateCurrentMessage(text) {
-  console.log('text', text) // this correctly returns the message I typed in
   return {
     type: 'UPDATE_CURRENT_MESSAGE',
     text
   };
 } 
+
+const removeDisplayedMessagesAction = () => ({
+    type: 'REMOVE_DISPLAYED_MESSAGES',
+});

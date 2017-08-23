@@ -1,18 +1,18 @@
 import * as firebase from 'firebase';
 
-export const fetchAllRooms = () => {
-  return function (dispatch) {
-    dispatch(fetchRoomsRequestedAction());
-    firebase.database()
-            .ref('rooms/')
-            .once('value', (snapshot) => {
-              setTimeout(() => {
-                const rooms = snapshot.val() || [];
-                Object.values(rooms).forEach(room => dispatch(fetchRoomsFulfilledAction(room)));
-              }, 0);
-            })
-    }
-}
+// export const fetchAllRooms = () => {
+//   return function (dispatch) {
+//     dispatch(fetchRoomsRequestedAction());
+//     firebase.database()
+//             .ref('rooms/')
+//             .once('value', (snapshot) => {
+//               setTimeout(() => {
+//                 const rooms = snapshot.val() || [];
+//                 Object.values(rooms).forEach(room => dispatch(fetchRoomsFulfilledAction(room)));
+//               }, 0);
+//             })
+//     }
+// }
 
 const fetchRoomsRequestedAction = () => ({
     type: 'START_FETCHING_ROOMS'

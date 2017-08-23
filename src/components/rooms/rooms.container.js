@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { fetchAllRooms, addRoom, subscribeToRooms, showAddRoomWindow, hideAddRoomWindow } from './rooms.actions';
+import { addRoom, subscribeToRooms, showAddRoomWindow, hideAddRoomWindow } from './rooms.actions';
 import { setActiveRoom } from '../shared/activeRoom.actions'
 import Rooms from './rooms.component';
 import AddRoomWindow from './addRoomWindow.component';
@@ -9,7 +9,7 @@ import _ from 'lodash';
 
 class RoomsContainer extends Component {
   componentWillMount() {
-    this.props.fetchAllRooms();
+    // this.props.fetchAllRooms();
     this.props.subscribeToRooms();
     // console.log('isempty in componentWillMount', _.isEmpty(this.props.rooms))
     // this.props.setActiveRoom({
@@ -45,7 +45,7 @@ export const RoomsC = connect(
     rooms: state.rooms,
     activeRoom: state.activeRoom,
   }),
-  (dispatch) => bindActionCreators({subscribeToRooms, showAddRoomWindow, fetchAllRooms, setActiveRoom }, dispatch)
+  (dispatch) => bindActionCreators({subscribeToRooms, showAddRoomWindow, setActiveRoom }, dispatch)
 )(RoomsContainer);
 
 

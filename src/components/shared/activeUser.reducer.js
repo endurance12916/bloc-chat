@@ -5,6 +5,8 @@ export const activeUser = (state = {}, action) => {
       return {
         username: action.username
       }
+    case 'LOG_OUT':
+      return state = {};
     default: 
       return state;
   }

@@ -1,4 +1,4 @@
-export const isSignInWindowVisible = (state = {isSignInWindowVisible: false}, action) => {
+export const isSignInWindowVisible = (state = false, action) => {
   switch(action.type) {
     case 'SHOW_SIGN_IN':
       console.log("reducer - show sign in window");

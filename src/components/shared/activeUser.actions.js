@@ -4,3 +4,7 @@ export function setActiveUser(username) {
     username
   };
 }
+
+export const logOutAction = () => ({
+  type: 'LOG_OUT'
+});

@@ -17,7 +17,7 @@ class UserNavbar extends Component {
             <MenuItem eventKey={1.1}>One button</MenuItem>
             <MenuItem eventKey={1.2}>Another button</MenuItem>
             <MenuItem divider />
-            <MenuItem eventKey={1.3}>Sign Out</MenuItem>
+            <MenuItem eventKey={1.3} onClick={()=>this.props.logOutAction()} >Log Out</MenuItem>
           </NavDropdown>
         )
       }

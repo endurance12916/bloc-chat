@@ -3,14 +3,15 @@ import { Modal, Form, FormGroup, FormControl, Button } from 'react-bootstrap'
 
 class AddRoomWindow extends Component {
 
-    handleSubmit = (event) => {
-        // preventDefault => page doesn't reload when form is submitted
-        event.preventDefault();
-        let id = this.props.rooms.length||0;
-        let newRoom = {id: 'room '+ id, name: this.roomName.value};
-        this.props.addRoom(newRoom);
-        this.props.setActiveRoom(newRoom);
-    }
+  // should this be in a container?
+  handleSubmit = (event) => {
+      // preventDefault => page doesn't reload when form is submitted
+      event.preventDefault();
+      let id = this.props.rooms.length||0;
+      let newRoom = {id: 'room '+ id, name: this.roomName.value};
+      this.props.addRoom(newRoom);
+      this.props.setActiveRoom(newRoom);
+  }
 
   render() {
     return (

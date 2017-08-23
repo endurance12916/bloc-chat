@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Col, Button } from 'react-bootstrap';
 import _ from 'lodash';
 import debounce from 'lodash/debounce';
-import * as firebase from 'firebase';
 
 class Messages extends Component {
   // Should I always put debounce function inside of a lifecycle method?
@@ -31,7 +30,6 @@ class Messages extends Component {
       console.log('this.props.currentMessage in messages.component', this.props.currentMessage)
       const nextMessage = {
         username: this.props.activeUser.username,
-        // roomId: this.props.activeRoom.id,
         createdAt: Date.now(),
         text: this.props.currentMessage
       }

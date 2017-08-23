@@ -34,6 +34,9 @@ export const messages = (state = [], action) => {
     case 'FETCH_MESSAGES_FULFILLED':
       console.log("reducer - fetch Messages/add Message fulfilled");
       return [...state, createMessage(state, action)];
+    case 'REMOVE_DISPLAYED_MESSAGES':
+      console.log("reducer - remove displayed messages")
+      return state = [];
     default: 
       return state;
   }

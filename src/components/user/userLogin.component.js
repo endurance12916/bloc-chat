@@ -5,13 +5,13 @@ import Cookies from 'js-cookie';
 
 class UsersLogin extends Component {
 
+  // should this be in here or in the container?
   handleSubmit = (event) => {
       // preventDefault => page doesn't reload when form is submitted
       event.preventDefault();
       let userName = this.userName;
       this.props.setActiveUser(userName.value);
       Cookies.set('user', userName.value);
-      console.log('username', userName.value)
   }
 
   render() {
