@@ -16,18 +16,23 @@ const defaultState = {
         isAddingRoomToServer: false,
         rooms: [],
         isAddRoomWindowVisible: false,
+        activeRoom: {}, // would return error if this is not here, but I do have it as initial state in the reducer though. Why the error?
       },
       // isFetchingRooms: false,
       // isAddingRoomToServer: false,
       // rooms: {},
-      activeRoom: {},
+      // activeRoom: {},
       // isAddRoomWindowVisible: false,
       isFetchingMessages: false,
       isAddingMessageToServer: false,
       messages: [],
       currentMessage: 'default message',
-      activeUser: {},
-      isSignInWindowVisible: false,
+      userReducer: {
+        activeUser: {},
+        isSignInWindowVisible: false,
+      }
+      // activeUser: {},
+      // isSignInWindowVisible: false,
 }
 
 const store = createStore(rootReducer, defaultState, applyMiddleware(thunk));

@@ -1,5 +1,5 @@
 import React from 'react';
-import './userNavbar.component.css'
+import './userNavbar.css'
 import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
 import _ from 'lodash';
 

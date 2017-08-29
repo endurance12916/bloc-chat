@@ -25,7 +25,7 @@ function mapStateToProps(state) {
     isAddingMessageToServer: state.isAddingMessageToServer,
     messages: state.messages, // so that -> this.props.messages = state.messages
     currentMessage: state.currentMessage,
-    activeRoom: state.activeRoom,
+    activeRoom: state.roomsReducer.activeRoom,
     activeUser: state.activeUser
   }
 }

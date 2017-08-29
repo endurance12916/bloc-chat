@@ -26,6 +26,6 @@ class UserNavbarContainer extends Component {
 }
 
 export default connect(
-  (state) => ({activeUser: state.activeUser}),
+  (state) => ({activeUser: state.userReducer.activeUser}),
   (dispatch) => bindActionCreators({setActiveUser, showSignInWindow, logOutAction}, dispatch)
 )(UserNavbarContainer);

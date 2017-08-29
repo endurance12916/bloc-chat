@@ -15,6 +15,6 @@ class UserLoginContainer extends Component {
 }
 
 export default connect(
-  (state) => ({isSignInWindowVisible: state.isSignInWindowVisible}),
+  (state) => ({isSignInWindowVisible: state.userReducer.isSignInWindowVisible}),
   (dispatch) => bindActionCreators({hideSignInWindow, setActiveUser}, dispatch)
 )(UserLoginContainer);

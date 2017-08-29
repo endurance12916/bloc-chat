@@ -5,6 +5,14 @@ const initialState = {
   isAddingRoomToServer: false,
   rooms: [],
   isAddRoomWindowVisible: false,
+  activeRoom: {},
+}
+
+function createRoom(state = [], action) {
+  return {
+    id: action.room.id, 
+    name: action.room.name
+  };
 }
 
 export const roomsReducer = (state = initialState, action) => {
@@ -30,6 +38,9 @@ export const roomsReducer = (state = initialState, action) => {
     case 'HIDE_ADD_ROOM':
       console.log("reducer - hide add room window");
       return {...state, isAddRoomWindowVisible: false};
+    case 'SET_ACTIVE_ROOM':
+      console.log("reducer - set active room to ", action.room);
+      return {...state, activeRoom: action.room};
     default:
       return state
   }
@@ -60,13 +71,6 @@ export const roomsReducer = (state = initialState, action) => {
 //           return state
 //   }
 // }
-
-function createRoom(state = [], action) {
-  return {
-    id: action.room.id, // first room's state.length is undefined. Why? Is this the best way to fix?
-    name: action.room.name
-  };
-}
 
 // export const rooms = (state = [], action) => {
 //   switch(action.type) {
