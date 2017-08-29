@@ -52,6 +52,6 @@ class AddRoomWindow extends Component {
 
 // can put connect here because no need for container (because no state change)
 export default connect(
-  (state) => ({rooms: state.rooms, isAddRoomWindowVisible: state.isAddRoomWindowVisible}),
+  (state) => ({rooms: state.roomsReducer.rooms, isAddRoomWindowVisible: state.roomsReducer.isAddRoomWindowVisible}),
   (dispatch) => bindActionCreators({hideAddRoomWindow, addRoom, setActiveRoom}, dispatch)
 )(AddRoomWindow);

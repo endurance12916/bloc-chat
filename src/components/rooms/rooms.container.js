@@ -19,9 +19,9 @@ class RoomsContainer extends Component {
 
 export default connect(
   (state) => ({
-    isFetchingRooms: state.isFetchingRooms,
-    rooms: state.rooms,
-    activeRoom: state.activeRoom,
+    isFetchingRooms: state.roomsReducer.isFetchingRooms,
+    rooms: state.roomsReducer.rooms,
+    activeRoom: state.roomsReducer.activeRoom,
   }),
   (dispatch) => bindActionCreators({ subscribeToRooms, showAddRoomWindow, setActiveRoom }, dispatch)
 )(RoomsContainer);
