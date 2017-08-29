@@ -180,16 +180,16 @@ export function submitMessage() {
   console.log('submitMessage action called')
   return (dispatch, getState) => {
     const state = getState();
-    if (_.isEmpty(state.activeUser)) {
+    if (_.isEmpty(state.userReducer.activeUser)) {
       return alert('Please sign in first.')
-    } else if (_.isEmpty(state.activeRoom)) {
+    } else if (_.isEmpty(state.roomsReducer.activeRoom)) {
       return alert('Please select or create a room first.')
     } else {
       dispatch(addMessage({
-        username: state.activeUser.username,
+        username: state.userReducer.activeUser.username,
         createdAt: Date.now(),
-        text: state.currentMessage,
-      }, state.activeRoom.id))
+        text: state.messagesReducer.currentMessage,
+      }, state.roomsReducer.activeRoom.id))
     }
   }
 }

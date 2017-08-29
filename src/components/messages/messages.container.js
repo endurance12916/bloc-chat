@@ -21,12 +21,12 @@ class MessagesContainer extends Component {
 // this function accepts state and then returns an object of props
 function mapStateToProps(state) {
   return {
-    isFetchingMessages: state.isFetchingMessages,
-    isAddingMessageToServer: state.isAddingMessageToServer,
-    messages: state.messages, // so that -> this.props.messages = state.messages
-    currentMessage: state.currentMessage,
+    isFetchingMessages: state.messagesReducer.isFetchingMessages,
+    isAddingMessageToServer: state.messagesReducer.isAddingMessageToServer,
+    messages: state.messagesReducer.messages, // so that -> this.props.messages = state.messages
+    currentMessage: state.messagesReducer.currentMessage,
     activeRoom: state.roomsReducer.activeRoom,
-    activeUser: state.activeUser
+    activeUser: state.userReducer.activeUser
   }
 }
 

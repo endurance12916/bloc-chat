@@ -4,14 +4,15 @@ import { combineReducers } from 'redux';
 // import { isFetchingRooms, isAddingRoomToServer, rooms, isAddRoomWindowVisible } from './rooms.reducer';
 import { roomsReducer } from './rooms.reducer';
 import { userReducer } from './user.reducer';
-import { isFetchingMessages, messages, currentMessage, isAddingMessageToServer } from './messages.reducer'
+import { messagesReducer } from './messages.reducer'
 // import { activeUser } from './activeUser.reducer'
 
 const rootReducer = combineReducers({
-  isFetchingMessages,
-  isAddingMessageToServer,
-  messages,
-  currentMessage,
+  // isFetchingMessages,
+  // isAddingMessageToServer,
+  // messages,
+  // currentMessage,
+  messagesReducer,
   roomsReducer,
   userReducer,
   // isFetchingRooms,

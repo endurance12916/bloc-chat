@@ -23,10 +23,12 @@ const defaultState = {
       // rooms: {},
       // activeRoom: {},
       // isAddRoomWindowVisible: false,
-      isFetchingMessages: false,
-      isAddingMessageToServer: false,
-      messages: [],
-      currentMessage: 'default message',
+      messagesReducer: {
+        isFetchingMessages: false,
+        isAddingMessageToServer: false,
+        messages: [],
+        currentMessage: 'default message',
+      },
       userReducer: {
         activeUser: {},
         isSignInWindowVisible: false,

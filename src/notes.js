@@ -10,3 +10,4 @@
 // 10. onHide is looking for a function
 // 11. import { Provider } from 'react-redux'; // Provider provides context - {store: this.props.store} to its children by rendering this.props.children
 // 12. add Action suffix to all actions
+// 13. use {...this.props} when passing props from containers to components. The this.props refers to all the props passed into the container through the connect function
