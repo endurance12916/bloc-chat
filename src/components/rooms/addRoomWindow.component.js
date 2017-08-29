@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import { Modal, Form, FormGroup, FormControl, Button } from 'react-bootstrap'
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { addRoom, hideAddRoomWindow, setActiveRoom } from '../../actions/actionCreators';
 
 class AddRoomWindow extends Component {
 
@@ -45,4 +48,10 @@ class AddRoomWindow extends Component {
   }
 };
 
-export default AddRoomWindow;
+// export default AddRoomWindow;
+
+// can put connect here because no need for container (because no state change)
+export default connect(
+  (state) => ({rooms: state.rooms, isAddRoomWindowVisible: state.isAddRoomWindowVisible}),
+  (dispatch) => bindActionCreators({hideAddRoomWindow, addRoom, setActiveRoom}, dispatch)
+)(AddRoomWindow);

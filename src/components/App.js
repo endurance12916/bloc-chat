@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import './App.css';
 import UserNavbarContainer from './user/userNavbar.container';
 import UserLoginContainer from './user/userLogin.container';
-import { RoomsC, AddRoomWindowC } from './rooms/rooms.container.js';
+import RoomsContainer from './rooms/rooms.container';
+import AddRoomWindow from './rooms/addRoomWindow.component';
 import MessagesContainer from './messages/messages.container';
 import * as firebase from 'firebase';
 import { Grid, Row } from 'react-bootstrap';
@@ -22,11 +23,11 @@ class App extends Component {
     return (
       <div className="App">
         <UserLoginContainer />
-        <AddRoomWindowC />
+        <AddRoomWindow />
         <UserNavbarContainer />
         <Grid fluid>
           <Row className="contents features">
-            <RoomsC />
+            <RoomsContainer />
             <MessagesContainer />
           </Row>
         </Grid>
