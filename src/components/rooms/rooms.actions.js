@@ -14,9 +14,9 @@ import * as firebase from 'firebase';
 //     }
 // }
 
-const fetchRoomsRequestedAction = () => ({
-    type: 'START_FETCHING_ROOMS'
-});
+// const fetchRoomsRequestedAction = () => ({
+//     type: 'START_FETCHING_ROOMS'
+// });
 
 const fetchRoomsFulfilledAction = (room) => ({
     type: 'FETCH_ROOMS_FULFILLED',

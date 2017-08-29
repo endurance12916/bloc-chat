@@ -1,4 +1,5 @@
 import * as firebase from 'firebase';
+import _ from 'lodash';
 
 function setActiveRoomAction(room) {
   return {
@@ -36,9 +37,9 @@ export const setActiveRoom = (room) => {
 //     }
 // }
 
-const fetchMessagesRequestedAction = () => ({
-    type: 'START_FETCHING_MESSAGES'
-});
+// const fetchMessagesRequestedAction = () => ({
+//     type: 'START_FETCHING_MESSAGES'
+// });
 
 const fetchMessagesFulfilledAction = (message) => ({
     type: 'FETCH_MESSAGES_FULFILLED',
@@ -93,3 +94,21 @@ export function updateCurrentMessage(text) {
 const removeDisplayedMessagesAction = () => ({
     type: 'REMOVE_DISPLAYED_MESSAGES',
 });
+
+export function submitMessage() {
+  console.log('submitMessage action called')
+  return (dispatch, getState) => {
+    const state = getState();
+    if (_.isEmpty(state.activeUser)) {
+      return alert('Please sign in first.')
+    } else if (_.isEmpty(state.activeRoom)) {
+      return alert('Please select or create a room first.')
+    } else {
+      dispatch(addMessage({
+        username: state.activeUser.username,
+        createdAt: Date.now(),
+        text: state.currentMessage,
+      }, state.activeRoom.id))
+    }
+  }
+}
