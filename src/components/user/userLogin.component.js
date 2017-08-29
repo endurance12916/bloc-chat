@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import { Modal, Form, FormGroup, FormControl, Button } from 'react-bootstrap';
 import './userLogin.css';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { hideSignInWindow, setActiveUser } from '../../actions/actionCreators'
 import Cookies from 'js-cookie';
 
-class UsersLogin extends Component {
+class UserLogin extends Component {
 
   // should this be in here or in the container?
   handleSubmit = (event) => {
@@ -42,4 +45,9 @@ class UsersLogin extends Component {
   }
 };
 
-export default UsersLogin;
+export default connect(
+  (state) => ({isSignInWindowVisible: state.userReducer.isSignInWindowVisible}),
+  (dispatch) => bindActionCreators({hideSignInWindow, setActiveUser}, dispatch)
+)(UserLogin);
+
+// export default UsersLogin;

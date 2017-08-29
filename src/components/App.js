@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import UserNavbarContainer from './user/userNavbar.container';
-import UserLoginContainer from './user/userLogin.container';
+import UserLogin from './user/userLogin.component';
 import RoomsContainer from './rooms/rooms.container';
 import AddRoomWindow from './rooms/addRoomWindow.component';
 import MessagesContainer from './messages/messages.container';
@@ -22,7 +22,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <UserLoginContainer />
+        <UserLogin />
         <AddRoomWindow />
         <UserNavbarContainer />
         <Grid fluid>
