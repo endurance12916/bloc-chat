@@ -6,9 +6,10 @@ import UserLogin from './userLogin.component';
 
 class UserLoginContainer extends Component {
   render() {
-    const { setActiveUser, isSignInWindowVisible, hideSignInWindow } = this.props;
+    // const { setActiveUser, isSignInWindowVisible, hideSignInWindow } = this.props;
     return (
-      <UserLogin setActiveUser={setActiveUser} isSignInWindowVisible={isSignInWindowVisible} hideSignInWindow={hideSignInWindow} />
+      // <UserLogin setActiveUser={setActiveUser} isSignInWindowVisible={isSignInWindowVisible} hideSignInWindow={hideSignInWindow} />
+      <UserLogin {...this.props} />
     )
   }
 }

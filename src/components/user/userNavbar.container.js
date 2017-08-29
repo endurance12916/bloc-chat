@@ -17,9 +17,10 @@ class UserNavbarContainer extends Component {
   }
 
   render() {
-    const { setActiveUser, activeUser, showSignInWindow, logOutAction } = this.props;
+    // const { setActiveUser, activeUser, showSignInWindow, logOutAction } = this.props;
     return (
-      <UserNavbar setActiveUser={setActiveUser} activeUser={activeUser} showSignInWindow={showSignInWindow} logOutAction={logOutAction} />
+      // <UserNavbar setActiveUser={setActiveUser} activeUser={activeUser} showSignInWindow={showSignInWindow} logOutAction={logOutAction} />
+      <UserNavbar {...this.props} />
     )
   }
 }

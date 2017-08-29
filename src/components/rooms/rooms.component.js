@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Col, Nav, NavItem, Button } from 'react-bootstrap';
 
 const Rooms = ({

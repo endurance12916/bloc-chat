@@ -3,7 +3,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { subscribeToRooms, showAddRoomWindow, setActiveRoom } from '../../actions/actionCreators';
 import Rooms from './rooms.component';
-import _ from 'lodash';
 
 class RoomsContainer extends Component {
   componentWillMount() {
