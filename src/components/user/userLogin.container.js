@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { hideSignInWindow } from './user.actions';
-import { setActiveUser } from '../shared/activeUser.actions'
+import { hideSignInWindow, setActiveUser } from '../../actions/actionCreators'
 import UserLogin from './userLogin.component';
 
 class UserLoginContainer extends Component {

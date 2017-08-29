@@ -1,7 +1,5 @@
 import React from 'react';
 import { Col, Button } from 'react-bootstrap';
-// import _ from 'lodash';
-// import debounce from 'lodash/debounce';
 
 function formatTime(time) {
   let d = new Date(time);

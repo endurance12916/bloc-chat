@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { subscribeToMessages, addMessage, updateCurrentMessage, submitMessage } from '../shared/activeRoom.actions';
+import { subscribeToMessages, addMessage, updateCurrentMessage, submitMessage } from '../../actions/actionCreators';
 import Messages from './messages.component';
 import debounce from 'lodash/debounce';
 

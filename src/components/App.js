@@ -6,7 +6,6 @@ import { RoomsC, AddRoomWindowC } from './rooms/rooms.container.js';
 import MessagesContainer from './messages/messages.container';
 import * as firebase from 'firebase';
 import { Grid, Row } from 'react-bootstrap';
-import Cookies from 'js-cookie';
 
 const config = {
     apiKey: "AIzaSyCXeADl350Vv4FALlgr4O4VtWztXWJFw3g",
@@ -18,7 +17,6 @@ const config = {
 };
 firebase.initializeApp(config);
 
-// since this component doesn't need any props, do I still need the App container?
 class App extends Component {
   render() {
     return (

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Col, Nav, NavItem, Button } from 'react-bootstrap';
-// import ShowAddRoomWindowContainer from '../addRoomWindow/addRoomWindow.container'
 
 class Rooms extends Component {
   render() {
