@@ -6,9 +6,7 @@ import { addRoom, hideAddRoomWindow, setActiveRoom } from '../../actions/actionC
 
 class AddRoomWindow extends Component {
 
-  // should this be in a container?
   handleSubmit = (event) => {
-      // preventDefault => page doesn't reload when form is submitted
       event.preventDefault();
       let id = this.props.rooms.length||0;
       let newRoom = {id: 'room '+ id, name: this.roomName.value};
@@ -21,7 +19,7 @@ class AddRoomWindow extends Component {
       <div className="modal-container" style={{height: 200}}>
         <Modal
           show={this.props.isAddRoomWindowVisible}
-          onHide={this.props.hideAddRoomWindow} // onHide is looking for a function
+          onHide={this.props.hideAddRoomWindow} 
           container={this}
           aria-labelledby="contained-modal-title"
         >
@@ -48,9 +46,6 @@ class AddRoomWindow extends Component {
   }
 };
 
-// export default AddRoomWindow;
-
-// can put connect here because no need for container (because no state change)
 export default connect(
   (state) => ({rooms: state.roomsReducer.rooms, isAddRoomWindowVisible: state.roomsReducer.isAddRoomWindowVisible}),
   (dispatch) => bindActionCreators({hideAddRoomWindow, addRoom, setActiveRoom}, dispatch)

@@ -1,35 +1,11 @@
 import * as firebase from 'firebase';
 import _ from 'lodash';
 
-// -----------------rooms.actions-----------------
-
-// export const fetchAllRooms = () => {
-//   return function (dispatch) {
-//     dispatch(fetchRoomsRequestedAction());
-//     firebase.database()
-//             .ref('rooms/')
-//             .once('value', (snapshot) => {
-//               setTimeout(() => {
-//                 const rooms = snapshot.val() || [];
-//                 Object.values(rooms).forEach(room => dispatch(fetchRoomsFulfilledAction(room)));
-//               }, 0);
-//             })
-//     }
-// }
-
-// const fetchRoomsRequestedAction = () => ({
-//     type: 'START_FETCHING_ROOMS'
-// });
-
 const fetchRoomsFulfilledAction = (room) => ({
     type: 'FETCH_ROOMS_FULFILLED',
     room
 });
 
-// Works fine until I refersh the page. If I have at least one room in database, the below error will pop up after refresh:
-// Warning: flattenChildren(...): Encountered two children with the same key, `.$room 0`. Child keys must be unique; when two children share a key, only the first child will be used.
-// It seems like it's trying to perform the fetch action once for every room in the databse. I think it's due to 'child_added'. I tried adding 'limitToLast(1)' but didn't work
-// this action is used in rooms.container under componentWillMount
 export const subscribeToRooms = () => {
   return function(dispatch) {
     firebase.database()
@@ -80,8 +56,6 @@ export function hideAddRoomWindow() {
   };
 }
 
-
-// -----------------shared/activeRoom.actions-----------------
 function setActiveRoomAction(room) {
   return {
     type: 'SET_ACTIVE_ROOM',
@@ -89,38 +63,13 @@ function setActiveRoomAction(room) {
   };
 } 
 
-// weird behavior: if I switch room, it will render messages from both rooms. How do I fix that?
-// this action is called in component/rooms/rooms.component.js
-
-// is it possible to refer to state in here?
 export const setActiveRoom = (room) => {
-  // clean the room before subscribe
   return function (dispatch) {
     dispatch(removeDisplayedMessagesAction());
     dispatch(setActiveRoomAction(room));
-    // dispatch(fetchAllMessages(room.id)); 
     dispatch(subscribeToMessages(room.id)); 
   }
 }
-
-// export const fetchAllMessages = (roomId) => {
-//   return function (dispatch) {
-//     console.log('fetchAllMessages route', ('messages/'+roomId+'/'))
-//     dispatch(fetchMessagesRequestedAction());
-//     firebase.database()
-//             .ref('messages/'+roomId+'/')
-//             .once('value', (snapshot) => {
-//               setTimeout(() => {
-//                 const messages = snapshot.val() || [];
-//                 Object.values(messages).forEach(message => dispatch(fetchMessagesFulfilledAction(message)));
-//               }, 0);
-//             })
-//     }
-// }
-
-// const fetchMessagesRequestedAction = () => ({
-//     type: 'START_FETCHING_MESSAGES'
-// });
 
 const fetchMessagesFulfilledAction = (message) => ({
     type: 'FETCH_MESSAGES_FULFILLED',
@@ -194,8 +143,6 @@ export function submitMessage() {
   }
 }
 
-
-// -----------------shared/activeUser.actions-----------------
 export function setActiveUser(username) {
   return {
     type: 'SET_ACTIVE_USER',
@@ -208,7 +155,6 @@ export const logOutAction = () => ({
 });
 
 
-// -----------------user.actions-----------------
 export function showSignInWindow() {
   return {
     type: 'SHOW_SIGN_IN',

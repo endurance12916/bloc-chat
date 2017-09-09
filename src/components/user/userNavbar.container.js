@@ -8,7 +8,6 @@ import Cookies from 'js-cookie';
 class UserNavbarContainer extends Component {
   componentDidMount() {
     const user = Cookies.get('user')
-    // this.props.setActiveUser(JSON.parse(user)); error: Unexpected token a in JSON at position 0
     if (user) {
       console.log('user', user)
       this.props.setActiveUser(user);
@@ -17,9 +16,7 @@ class UserNavbarContainer extends Component {
   }
 
   render() {
-    // const { setActiveUser, activeUser, showSignInWindow, logOutAction } = this.props;
     return (
-      // <UserNavbar setActiveUser={setActiveUser} activeUser={activeUser} showSignInWindow={showSignInWindow} logOutAction={logOutAction} />
       <UserNavbar {...this.props} />
     )
   }

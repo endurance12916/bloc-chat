@@ -3,7 +3,6 @@ const initialState = {
   activeUser: {},
 }
 
-// export const userReducer = (state = initialState, action) => {
 export default function(state = initialState, action) {
   switch(action.type) {
     case 'SHOW_SIGN_IN':

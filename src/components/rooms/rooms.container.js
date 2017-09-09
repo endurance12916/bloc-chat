@@ -6,7 +6,6 @@ import Rooms from './rooms.component';
 
 class RoomsContainer extends Component {
   componentWillMount() {
-    // this.props.fetchAllRooms();
     this.props.subscribeToRooms();
   }
 

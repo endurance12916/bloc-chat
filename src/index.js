@@ -4,7 +4,7 @@ import './index.css';
 import App from './components/App';
 import registerServiceWorker from './registerServiceWorker';
 
-import { Provider } from 'react-redux'; // Provider provides context - {store: this.props.store} to its children by rendering this.props.children
+import { Provider } from 'react-redux';
 import store from './store';
 
 ReactDOM.render(
@@ -15,6 +15,3 @@ ReactDOM.render(
 );
 
 registerServiceWorker();
-
-// ReactDOM.render(<App />, document.getElementById('root'));
-// registerServiceWorker();

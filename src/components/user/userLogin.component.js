@@ -8,9 +8,7 @@ import Cookies from 'js-cookie';
 
 class UserLogin extends Component {
 
-  // should this be in here or in the container?
   handleSubmit = (event) => {
-      // preventDefault => page doesn't reload when form is submitted
       event.preventDefault();
       let userName = this.userName;
       this.props.setActiveUser(userName.value);
@@ -49,5 +47,3 @@ export default connect(
   (state) => ({isSignInWindowVisible: state.userReducer.isSignInWindowVisible}),
   (dispatch) => bindActionCreators({hideSignInWindow, setActiveUser}, dispatch)
 )(UserLogin);
-
-// export default UsersLogin;
